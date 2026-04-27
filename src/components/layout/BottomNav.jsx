@@ -1,31 +1,35 @@
 import { useLocation, useNavigate } from 'react-router-dom';
+import './BottomNav.css';
 
 function BottomNav() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const getNavStyle = (path) => ({
-    flex: 1,
-    textAlign: 'center',
-    padding: '15px 0',
-    cursor: 'pointer',
-    color: location.pathname === path ? 'var(--color-primary)' : 'var(--color-text-muted)',
-    fontWeight: location.pathname === path ? 'bold' : 'normal',
-    borderTop: location.pathname === path ? '3px solid var(--color-primary)' : '3px solid transparent',
-    transition: 'all 0.2s ease'
-  });
-
   return (
-    <nav style={{ position: 'fixed', bottom: 0, left: 0, right: 0, backgroundColor: 'var(--color-surface)', display: 'flex', justifyContent: 'space-around', boxShadow: '0 -2px 10px rgba(0,0,0,0.05)' }}>
-      <div style={getNavStyle('/')} onClick={() => navigate('/')}>
-        🏠 Início
-      </div>
-      <div style={getNavStyle('/carteira')} onClick={() => navigate('/carteira')}>
-        💳 Carteira
-      </div>
-      <div style={getNavStyle('/perfil')} onClick={() => navigate('/perfil')}>
-        👤 Perfil
-      </div>
+    <nav className="bottom-nav" aria-label="Navegação principal">
+      <button 
+        className={`bottom-nav__item ${location.pathname === '/' ? 'bottom-nav__item--active' : ''}`}
+        onClick={() => navigate('/')}
+      >
+        <i className="lni lni-home-2" aria-hidden="true"></i>
+        <span>Início</span>
+      </button>
+      
+      <button 
+        className={`bottom-nav__item ${location.pathname === '/carteira' ? 'bottom-nav__item--active' : ''}`}
+        onClick={() => navigate('/carteira')}
+      >
+        <i className="lni lni-wallet-1" aria-hidden="true"></i>
+        <span>Carteira</span>
+      </button>
+      
+      <button 
+        className={`bottom-nav__item ${location.pathname === '/perfil' ? 'bottom-nav__item--active' : ''}`}
+        onClick={() => navigate('/perfil')}
+      >
+        <i className="lni lni-user-4" aria-hidden="true"></i>
+        <span>Perfil</span>
+      </button>
     </nav>
   );
 }

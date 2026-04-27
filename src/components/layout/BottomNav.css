@@ -1,0 +1,47 @@
+/* src/components/layout/BottomNav.css */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-width: 768px; /* Mantém alinhado com o app-shell */
+    margin: 0 auto; /* Centraliza junto com o app-shell */
+    height: 72px;
+    background-color: var(--color-surface);
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 8px 16px;
+    border-top: 1px solid #E5E7EB;
+    z-index: 50;
+    box-shadow: 0 -2px 12px rgba(20, 20, 20, 0.04);
+}
+
+.bottom-nav__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 8px 12px;
+    min-width: 44px;
+    min-height: 44px;
+    color: var(--color-text-muted);
+    font-size: var(--fs-xs);
+    border-radius: 8px;
+    transition: color 0.2s ease;
+    text-decoration: none;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.bottom-nav__item i { font-size: 22px; }
+
+.bottom-nav__item:hover { color: var(--color-primary); }
+
+.bottom-nav__item--active {
+    color: var(--color-primary);
+    font-weight: 700;
+}
