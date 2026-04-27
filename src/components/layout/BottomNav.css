@@ -1,21 +1,20 @@
 /* src/components/layout/BottomNav.css */
 .bottom-nav {
     position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
-    max-width: 768px; /* Mantém alinhado com o app-shell */
-    margin: 0 auto; /* Centraliza junto com o app-shell */
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 40px);
+    max-width: 400px;
     height: 72px;
     background-color: var(--color-surface);
     display: flex;
     align-items: center;
     justify-content: space-evenly;
-    padding: 8px 16px;
-    border-top: 1px solid #E5E7EB;
+    padding: 8px;
+    border-radius: 36px; /* Formato de pílula (flutuante) */
     z-index: 50;
-    box-shadow: 0 -2px 12px rgba(20, 20, 20, 0.04);
+    box-shadow: 0 10px 30px rgba(28, 151, 112, 0.15); /* Sombra com tom verde para dar destaque */
 }
 
 .bottom-nav__item {
@@ -24,24 +23,37 @@
     align-items: center;
     justify-content: center;
     gap: 4px;
-    padding: 8px 12px;
-    min-width: 44px;
-    min-height: 44px;
+    padding: 8px 20px;
+    min-height: 56px;
     color: var(--color-text-muted);
     font-size: var(--fs-xs);
-    border-radius: 8px;
-    transition: color 0.2s ease;
+    border-radius: 24px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     text-decoration: none;
     background: transparent;
     border: none;
     cursor: pointer;
 }
 
-.bottom-nav__item i { font-size: 22px; }
+.bottom-nav__item i { 
+    font-size: 24px; 
+    transition: transform 0.3s ease;
+}
 
-.bottom-nav__item:hover { color: var(--color-primary); }
+.bottom-nav__item:hover { 
+    color: var(--color-primary); 
+}
+
+.bottom-nav__item:active i {
+    transform: scale(0.9); /* Efeito de clique */
+}
 
 .bottom-nav__item--active {
     color: var(--color-primary);
     font-weight: 700;
+    background-color: rgba(28, 151, 112, 0.1); /* Fundo verde clarinho no item ativo */
+}
+
+.bottom-nav__item--active i {
+    transform: translateY(-2px); /* Eleva levemente o ícone ativo */
 }
