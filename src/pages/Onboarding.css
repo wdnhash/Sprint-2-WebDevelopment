@@ -76,7 +76,8 @@
     width: 64px;
     height: 64px;
     border-radius: 16px;
-    background-color: rgba(28, 151, 112, 0.12); /* primary color with opacity */
+    background-color: rgba(28, 151, 112, 0.12);
+    /* primary color with opacity */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -225,7 +226,7 @@
 /* Classe aplicada via React no selectedTrilha */
 .objective__option.selected {
     border-color: var(--color-primary);
-    background-color: #F0FBF6; /* Um verde bem suave que combina com a seleção */
+    background-color: #F0FBF6;
 }
 
 .objective__option-content {
@@ -268,3 +269,22 @@
 
 .objective__option h2 {
     font-size: var(--fs-md);
+    font-weight: 700;
+    color: var(--color-text);
+    margin: 0;
+}
+
+.objective__option input[type="radio"] {
+    width: 22px;
+    height: 22px;
+    accent-color: var(--color-primary);
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.objective__cta {
+    display: flex;
+    justify-content: center;
+    margin-top: 1.5rem;
+    width: 100%;
+}
