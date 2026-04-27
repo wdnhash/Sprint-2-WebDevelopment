@@ -1,65 +1,81 @@
+import './Profile.css';
+
 function Profile({ userStats }) {
   const { name, title, level, streak } = userStats;
 
   return (
-    <main style={{ padding: '0' }}>
+    <div style={{ backgroundColor: 'var(--color-bg)', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       {/* HEADER DE PERFIL */}
-      <div style={{ backgroundColor: 'var(--color-primary)', color: 'var(--color-surface)', padding: '40px 20px 30px 20px', borderBottomLeftRadius: '30px', borderBottomRightRadius: '30px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
-          <h2 style={{ margin: 0, fontSize: '22px' }}>Perfil</h2>
-          <span style={{ fontSize: '24px' }}>⚙️</span>
+      <header className="profile__header">
+        <div className="profile__top">
+          <h1>Perfil</h1>
+          <button aria-label="Configurações">
+            <i className="lni lni-gear-1" aria-hidden="true"></i>
+          </button>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginBottom: '30px' }}>
-          <div style={{ width: '80px', height: '80px', backgroundColor: 'var(--color-surface)', borderRadius: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <span style={{ fontSize: '40px', color: 'var(--color-primary)' }}>👤</span>
+        <div className="profile__identity">
+          <div className="profile__avatar" aria-hidden="true">
+            <i className="fa-regular fa-user"></i>
           </div>
-          <div>
-            <h1 style={{ margin: '0 0 5px 0', fontSize: '24px' }}>{name}</h1>
-            <p style={{ margin: 0, fontSize: '14px', opacity: 0.9 }}>{title}</p>
+          <div className="profile__name">
+            <h2>{name}</h2>
+            <p>{title}</p>
           </div>
         </div>
 
-        <div style={{ display: 'flex', gap: '15px' }}>
-          <div style={{ flex: 1, backgroundColor: 'rgba(255,255,255,0.15)', padding: '15px', borderRadius: '15px' }}>
-            <p style={{ margin: '0 0 5px 0', fontSize: '12px', opacity: 0.9 }}>Nível</p>
-            <h3 style={{ margin: 0, fontSize: '24px' }}>{level}</h3>
+        <div className="profile__stats">
+          <div className="profile__stat-card">
+            <p>Nível</p>
+            <strong>{level}</strong>
           </div>
-          <div style={{ flex: 1, backgroundColor: 'rgba(255,255,255,0.15)', padding: '15px', borderRadius: '15px' }}>
-            <p style={{ margin: '0 0 5px 0', fontSize: '12px', opacity: 0.9 }}>Streak</p>
-            <h3 style={{ margin: 0, fontSize: '24px' }}>{streak} dias</h3>
+          <div className="profile__stat-card">
+            <p>Streak</p>
+            <strong>{streak} dias</strong>
           </div>
         </div>
-      </div>
+      </header>
 
       {/* MENU DE OPÇÕES */}
-      <div style={{ padding: '20px' }}>
-        <div style={{ backgroundColor: 'var(--color-surface)', borderRadius: '20px', padding: '10px 20px', boxShadow: '0 2px 10px rgba(0,0,0,0.05)', marginBottom: '30px' }}>
+      <main className="profile__main">
+        <nav className="profile__menu" aria-label="Atalhos do perfil">
+          <button className="profile__menu-item">
+            <span className="profile__menu-content">
+              <span className="profile__menu-icon" aria-hidden="true">
+                <i className="fa-regular fa-bell"></i>
+              </span>
+              <span className="text">Notificações</span>
+            </span>
+            <i className="lni lni-angle-double-right arrow" aria-hidden="true"></i>
+          </button>
           
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '15px 0', borderBottom: '1px solid var(--color-bg)' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-              <span style={{ backgroundColor: 'var(--color-bg)', color: 'var(--color-primary)', padding: '10px', borderRadius: '50%' }}>🔔</span>
-              <strong style={{ color: 'var(--color-text)' }}>Notificações</strong>
-            </div>
-            <span style={{ color: 'var(--color-text-muted)' }}>{'>'}</span>
-          </div>
-
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '15px 0' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-              <span style={{ backgroundColor: 'var(--color-bg)', color: 'var(--color-text-muted)', padding: '10px', borderRadius: '50%' }}>⚙️</span>
-              <strong style={{ color: 'var(--color-text)' }}>Configurações</strong>
-            </div>
-            <span style={{ color: 'var(--color-text-muted)' }}>{'>'}</span>
-          </div>
+          <button className="profile__menu-item">
+            <span className="profile__menu-content">
+              <span className="profile__menu-icon profile__menu-icon--gray" aria-hidden="true">
+                <i className="lni lni-gear-1"></i>
+              </span>
+              <span className="text">Configurações</span>
+            </span>
+            <i className="lni lni-angle-double-right arrow" aria-hidden="true"></i>
+          </button>
           
-        </div>
+          <button className="profile__menu-item">
+            <span className="profile__menu-content">
+              <span className="profile__menu-icon profile__menu-icon--gray" aria-hidden="true">
+                <i className="lni lni-question-circle"></i>
+              </span>
+              <span className="text">Ajuda &amp; Suporte</span>
+            </span>
+            <i className="lni lni-angle-double-right arrow" aria-hidden="true"></i>
+          </button>
+        </nav>
 
-        {/* Uso da cor de erro oficial */}
-        <button style={{ width: '100%', padding: '15px', backgroundColor: 'transparent', border: 'none', color: 'var(--color-error)', fontWeight: 'bold', fontSize: '16px', cursor: 'pointer' }}>
-          [→ Sair da conta
+        <button className="profile__exit">
+          <i className="fa-solid fa-arrow-right-from-bracket" aria-hidden="true"></i>
+          <span>Sair da conta</span>
         </button>
-      </div>
-    </main>
+      </main>
+    </div>
   );
 }
 

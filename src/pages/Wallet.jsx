@@ -1,67 +1,103 @@
+import { useState } from 'react';
+import './Wallet.css';
+
 function Wallet({ userStats }) {
   const { carePoints, xp } = userStats;
+  const [activeTab, setActiveTab] = useState('recompensas');
 
   const rewards = [
-    { id: 1, title: "1 Mês Premium Headspace", category: "Headspace", cost: 500, locked: true },
-    { id: 2, title: "Desconto em Tênis", category: "Centauro", cost: 200, locked: false },
-    { id: 3, title: "E-book de Receitas", category: "CarePlus", cost: 100, locked: false }
+    { id: 1, title: "1 Mês Premium Headspace", category: "Headspace", icon: "fa-headphones", cost: 500, locked: true },
+    { id: 2, title: "Desconto em Tênis", category: "Centauro", icon: "fa-shoe-prints", cost: 200, locked: false },
+    { id: 3, title: "E-book de Receitas", category: "CarePlus", icon: "fa-book", cost: 100, locked: false }
   ];
 
   return (
-    <main style={{ padding: '20px' }}>
-      <h2 style={{ fontSize: '22px', marginBottom: '20px', color: 'var(--color-text)' }}>Carteira CareQuest</h2>
-      
-      {/* CARD PRINCIPAL DA CARTEIRA */}
-      <div style={{ backgroundColor: 'var(--color-primary)', color: 'var(--color-surface)', borderRadius: '20px', padding: '25px', boxShadow: '0 4px 15px rgba(28, 151, 112, 0.3)', marginBottom: '20px' }}>
-        <p style={{ margin: 0, fontSize: '14px', opacity: 0.9 }}>Saldo atual</p>
-        <div style={{ display: 'flex', alignItems: 'baseline', gap: '5px', marginBottom: '20px' }}>
-          <span style={{ fontSize: '24px' }}>🪙</span>
-          <h1 style={{ margin: 0, fontSize: '36px' }}>{carePoints}</h1>
-          <span style={{ fontSize: '16px', opacity: 0.9 }}>pts</span>
-        </div>
-        
-        <div style={{ borderTop: '1px solid rgba(255,255,255,0.2)', paddingTop: '15px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <span style={{ fontSize: '14px', opacity: 0.9 }}>XP Total acumulado</span>
-          <strong style={{ fontSize: '16px' }}>{xp} XP</strong>
-        </div>
-      </div>
+    <div style={{ backgroundColor: 'var(--color-bg)', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+      <header className="wallet__header" role="banner">
+        <h1 className="wallet__title">Carteira CareQuest</h1>
 
-      {/* ABAS */}
-      <div style={{ display: 'flex', backgroundColor: 'var(--color-surface)', borderRadius: '25px', padding: '5px', marginBottom: '25px', boxShadow: '0 2px 10px rgba(0,0,0,0.05)' }}>
-        <div style={{ flex: 1, textAlign: 'center', padding: '10px 0', backgroundColor: 'var(--color-surface)', borderRadius: '20px', fontWeight: 'bold', boxShadow: '0 2px 5px rgba(0,0,0,0.05)', color: 'var(--color-text)' }}>Recompensas</div>
-        <div style={{ flex: 1, textAlign: 'center', padding: '10px 0', color: 'var(--color-text-muted)' }}>Histórico</div>
-      </div>
-
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
-        <h3 style={{ margin: 0, fontSize: '18px', color: 'var(--color-text)' }}>Destaques para você</h3>
-        <span style={{ color: 'var(--color-primary)', fontSize: '14px', fontWeight: 'bold' }}>Ver tudo {'>'}</span>
-      </div>
-
-      {/* LISTA DINÂMICA DE RECOMPENSAS */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-        {rewards.map((item) => (
-          <div key={item.id} style={{ backgroundColor: 'var(--color-surface)', padding: '15px', borderRadius: '15px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', boxShadow: '0 2px 10px rgba(0,0,0,0.05)' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-              <div style={{ width: '50px', height: '50px', backgroundColor: item.locked ? 'var(--color-bg)' : 'var(--color-primary)', borderRadius: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center', color: 'var(--color-surface)', fontSize: '12px', fontWeight: 'bold' }}>
-                LOGO
-              </div>
-              <div>
-                <h4 style={{ margin: '0 0 5px 0', color: item.locked ? 'var(--color-text-muted)' : 'var(--color-text)' }}>{item.title}</h4>
-                <p style={{ margin: 0, fontSize: '12px', color: 'var(--color-text-muted)' }}>{item.category}</p>
-              </div>
-            </div>
-            <div style={{ textAlign: 'right' }}>
-              <div style={{ fontWeight: 'bold', color: item.locked ? 'var(--color-text-muted)' : 'var(--color-primary)' }}>
-                {item.locked ? '🔒 ' : ''}{item.cost} pts
-              </div>
-              {!item.locked && (
-                <div style={{ fontSize: '10px', backgroundColor: 'var(--color-accent-1)', color: 'var(--color-surface)', padding: '4px 8px', borderRadius: '10px', marginTop: '5px', display: 'inline-block' }}>Resgatar</div>
-              )}
+        {/* CARD PRINCIPAL DA CARTEIRA */}
+        <section className="wallet__balance-card" aria-label="Saldo da carteira">
+          <div className="wallet__balance-row">
+            <p>SALDO ATUAL</p>
+            <div className="wallet__balance-amount">
+              <i className="fa-solid fa-coins" aria-hidden="true"></i>
+              <h2>{carePoints} <span>pts</span></h2>
             </div>
           </div>
-        ))}
-      </div>
-    </main>
+          <div className="wallet__xp-row">
+            <p>XP Total acumulado</p>
+            <strong>{xp} XP</strong>
+          </div>
+        </section>
+
+        {/* ABAS */}
+        <nav className="wallet__tabs" role="tablist" aria-label="Seções da carteira">
+          <button 
+            className={`wallet__tab ${activeTab === 'recompensas' ? 'wallet__tab--active' : ''}`} 
+            onClick={() => setActiveTab('recompensas')}
+            role="tab" 
+            aria-selected={activeTab === 'recompensas'}
+          >
+            Recompensas
+          </button>
+          <button 
+            className={`wallet__tab ${activeTab === 'historico' ? 'wallet__tab--active' : ''}`} 
+            onClick={() => setActiveTab('historico')}
+            role="tab" 
+            aria-selected={activeTab === 'historico'}
+          >
+            Histórico
+          </button>
+        </nav>
+      </header>
+
+      <main className="wallet__main">
+        {activeTab === 'recompensas' && (
+          <>
+            <div className="wallet__main-title">
+              <h2>Destaques para você</h2>
+              <button className="wallet__see-all">
+                Ver tudo <i className="fa-solid fa-chevron-right" aria-hidden="true"></i>
+              </button>
+            </div>
+
+            {/* LISTA DINÂMICA DE RECOMPENSAS */}
+            <ul className="wallet__cards">
+              {rewards.map((item) => (
+                <li key={item.id} className="reward-card">
+                  <div className={`reward-card__logo ${item.locked ? 'reward-card__logo--gray' : ''}`} aria-hidden="true">
+                    <i className={`fa-solid ${item.icon}`}></i>
+                  </div>
+                  <div className="reward-card__body">
+                    <div className="reward-card__info">
+                      <h3>{item.title}</h3>
+                      <p>{item.category}</p>
+                    </div>
+                    <div className="reward-card__action">
+                      <span className={`reward-card__price ${item.locked ? 'reward-card__price--locked' : ''}`}>
+                        {item.locked && <i className="lni lni-locked-2" aria-hidden="true" style={{ marginRight: '4px' }}></i>} 
+                        {item.cost} pts
+                      </span>
+                      {!item.locked && (
+                        <button className="reward-card__redeem">Resgatar</button>
+                      )}
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
+        
+        {activeTab === 'historico' && (
+          <div style={{ textAlign: 'center', padding: '40px 20px', color: 'var(--color-text-muted)' }}>
+            <i className="fa-solid fa-clock-rotate-left" style={{ fontSize: '40px', marginBottom: '15px', color: 'var(--color-border)' }}></i>
+            <p>Seu histórico de transações aparecerá aqui.</p>
+          </div>
+        )}
+      </main>
+    </div>
   );
 }
 
