@@ -1,1 +1,37 @@
+:root {
+  /* Cores de Fundo */
+  --bg-main: #F4F7FB;
+  --bg-card: #ffffff;
+  
+  /* Cores Principais (Marca) */
+  --primary-green: #00A859;
+  --dark-green: #188659;
+  --light-green: #E5F6ED;
+  --light-green-hover: #E8F5E9;
+  
+  /* Cores de Destaque / Alertas */
+  --accent-orange: #FF5A36;
+  --light-orange: #FFF0ED;
+  
+  /* Tipografia */
+  --text-dark: #333333;
+  --text-muted: #666666;
+  --text-light: #999999;
+  
+  /* Bordas e Elementos Neutros */
+  --border-light: #eeeeee;
+  --border-dark: #dddddd;
+}
 
+/* Reset básico para garantir que o layout não quebre nas bordas */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-main);
+  font-family: sans-serif;
+  color: var(--text-dark);
+}

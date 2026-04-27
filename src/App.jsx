@@ -52,8 +52,8 @@ function App() {
   const hideBottomNav = location.pathname === '/onboarding';
 
   return (
-    <div style={{ backgroundColor: '#F4F7FB', minHeight: '100vh', paddingBottom: hideBottomNav ? '0' : '80px', fontFamily: 'sans-serif' }}>
-      
+    <div style={{ minHeight: '100vh', paddingBottom: hideBottomNav ? '0' : '80px' }}>
+
       <Routes>
         {/* ROTA PÚBLICA / ONBOARDING */}
         <Route 

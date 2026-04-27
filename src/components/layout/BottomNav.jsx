@@ -4,20 +4,19 @@ function BottomNav() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Define o estilo ativo baseado na URL atual
   const getNavStyle = (path) => ({
     flex: 1,
     textAlign: 'center',
     padding: '15px 0',
     cursor: 'pointer',
-    color: location.pathname === path ? '#00A859' : '#999',
+    color: location.pathname === path ? 'var(--primary-green)' : 'var(--text-light)',
     fontWeight: location.pathname === path ? 'bold' : 'normal',
-    borderTop: location.pathname === path ? '3px solid #00A859' : '3px solid transparent',
+    borderTop: location.pathname === path ? '3px solid var(--primary-green)' : '3px solid transparent',
     transition: 'all 0.2s ease'
   });
 
   return (
-    <nav style={{ position: 'fixed', bottom: 0, left: 0, right: 0, backgroundColor: '#fff', display: 'flex', justifyContent: 'space-around', boxShadow: '0 -2px 10px rgba(0,0,0,0.05)' }}>
+    <nav style={{ position: 'fixed', bottom: 0, left: 0, right: 0, backgroundColor: 'var(--bg-card)', display: 'flex', justifyContent: 'space-around', boxShadow: '0 -2px 10px rgba(0,0,0,0.05)' }}>
       <div style={getNavStyle('/')} onClick={() => navigate('/')}>
         🏠 Início
       </div>
