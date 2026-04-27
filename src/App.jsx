@@ -47,6 +47,13 @@ function App() {
     }));
   };
 
+  const updateUser = (newData) => {
+    setUserStats(prev => ({
+      ...prev,
+      ...newData
+    }));
+  };
+
   // 4. Lógica para esconder a barra inferior no onboarding
   const hideBottomNav = location.pathname === '/onboarding';
 
@@ -87,7 +94,7 @@ function App() {
           path="/perfil" 
           element={
             userStats.hasCompletedOnboarding 
-              ? <Profile userStats={userStats} /> 
+              ? <Profile userStats={userStats} onUpdateUser={updateUser} /> 
               : <Navigate to="/onboarding" replace />
           } 
         />
