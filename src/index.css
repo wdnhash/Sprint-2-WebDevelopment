@@ -1,37 +1,57 @@
 :root {
-  /* Cores de Fundo */
-  --bg-main: #F4F7FB;
-  --bg-card: #ffffff;
-  
-  /* Cores Principais (Marca) */
-  --primary-green: #00A859;
-  --dark-green: #188659;
-  --light-green: #E5F6ED;
-  --light-green-hover: #E8F5E9;
-  
-  /* Cores de Destaque / Alertas */
-  --accent-orange: #FF5A36;
-  --light-orange: #FFF0ED;
-  
+  /* Paleta CareQuest */
+  --color-primary: #1C9770;
+  --color-primary-light: #27ce99;
+  --color-secondary: #93CB52;
+  --color-accent-1: #7AD180;
+  --color-accent-2: #7AD1C3;
+  --color-text: #141414;
+  --color-text-muted: #6B6B6B;
+  --color-bg: #F5F7FA;
+  --color-surface: #FFFFFF;
+  --color-error: #E53935;
+
   /* Tipografia */
-  --text-dark: #333333;
-  --text-muted: #666666;
-  --text-light: #999999;
-  
-  /* Bordas e Elementos Neutros */
-  --border-light: #eeeeee;
-  --border-dark: #dddddd;
+  --fs-xs: 12px;
+  --fs-sm: 14px;
+  --fs-md: 16px;
+  --fs-lg: 18px;
+  --fs-xl: 20px;
+  --fs-2xl: 24px;
 }
 
-/* Reset básico para garantir que o layout não quebre nas bordas */
-* {
-  box-sizing: border-box;
+/* Reset Base e Tipografia */
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
   margin: 0;
   padding: 0;
 }
 
-body {
-  background-color: var(--bg-main);
-  font-family: sans-serif;
-  color: var(--text-dark);
+/* App Shell*/
+.app-shell {
+  max-width: 768px;
+  margin: 0 auto;
+  background-color: var(--color-surface);
+  min-height: 100vh;
+  position: relative;
+  box-shadow: 0 0 20px rgba(0,0,0,0.05);
+}
+
+/* Utilitários Globais de Botões que você mencionou */
+.btn-primary-cta {
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 15px;
+  font-weight: 700;
+  width: 100%;
+  transition: background-color 0.2s ease;
+}
+
+.btn-primary-cta:hover {
+  background-color: var(--color-primary-light);
+  color: white;
 }
