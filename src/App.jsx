@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 
 // IMPORTAÇÕES (Descomentaremos no próximo passo assim que criarmos os arquivos)
-// import Home from './pages/Home';
+import Home from './pages/Home';
 // import Wallet from './pages/Wallet';
 // import Profile from './pages/Profile';
 import Onboarding from './pages/Onboarding';
@@ -70,7 +70,7 @@ function App() {
           path="/" 
           element={
             userStats.hasCompletedOnboarding 
-              ? <div style={{padding: '20px'}}>Home em construção...</div> 
+              ? <Home userStats={userStats} onComplete={completeMission} /> 
               : <Navigate to="/onboarding" replace />
           } 
         />
