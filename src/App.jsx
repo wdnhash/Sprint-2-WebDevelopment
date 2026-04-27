@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 
-// IMPORTAÇÕES (Descomentaremos no próximo passo assim que criarmos os arquivos)
 import Home from './pages/Home';
-// import Wallet from './pages/Wallet';
-// import Profile from './pages/Profile';
+import Wallet from './pages/Wallet';
+import Profile from './pages/Profile';
 import Onboarding from './pages/Onboarding';
 import BottomNav from './components/layout/BottomNav';
 
@@ -79,7 +78,7 @@ function App() {
           path="/carteira" 
           element={
             userStats.hasCompletedOnboarding 
-              ? <div style={{padding: '20px'}}>Carteira em construção...</div>
+              ? <Wallet userStats={userStats} /> 
               : <Navigate to="/onboarding" replace />
           } 
         />
@@ -88,7 +87,7 @@ function App() {
           path="/perfil" 
           element={
             userStats.hasCompletedOnboarding 
-              ? <div style={{padding: '20px'}}>Perfil em construção...</div>
+              ? <Profile userStats={userStats} /> 
               : <Navigate to="/onboarding" replace />
           } 
         />
