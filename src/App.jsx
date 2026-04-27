@@ -5,8 +5,8 @@ import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 // import Home from './pages/Home';
 // import Wallet from './pages/Wallet';
 // import Profile from './pages/Profile';
-// import Onboarding from './pages/Onboarding';
-// import BottomNav from './components/layout/BottomNav';
+import Onboarding from './pages/Onboarding';
+import BottomNav from './components/layout/BottomNav';
 
 function App() {
   const location = useLocation();
@@ -60,7 +60,7 @@ function App() {
           path="/onboarding" 
           element={
             !userStats.hasCompletedOnboarding 
-              ? <div style={{padding: '20px'}}>Tela de Onboarding em construção...</div>
+              ? <Onboarding onFinish={finishOnboarding} /> 
               : <Navigate to="/" replace />
           } 
         />
@@ -95,7 +95,7 @@ function App() {
       </Routes>
 
       {/* Exibe a barra de navegação condicionalmente */}
-      {!hideBottomNav && (
+      {!hideBottomNav && BottomNav(
         <div style={{ position: 'fixed', bottom: 0, width: '100%', background: '#fff', padding: '20px', textAlign: 'center', borderTop: '1px solid #ddd' }}>
           Barra de Navegação em construção...
         </div>
