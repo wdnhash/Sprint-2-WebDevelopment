@@ -1,4 +1,4 @@
-# CareQuest – Jornada Gamificada do Cuidado Contínuo 🛡️
+# CareQuest – Jornada Gamificada 🛡️
 
 Bem-vindo ao repositório Front-End do **CareQuest**, a solução gamificada desenvolvida para o Challenge Care Plus (Sprint 2 - Web Development). O objetivo deste projeto é transformar a saúde preventiva em uma jornada envolvente e recompensadora, incentivando hábitos saudáveis através de missões diárias, trilhas de saúde e um sistema de recompensas.
 
@@ -40,7 +40,7 @@ Certifique-se de ter o **[Node.js](https://nodejs.org/)** (versão 18+ recomenda
 
 1. **Clone o repositório:**
    ```bash
-   git clone https://github.com/[SEU-USUARIO]/[NOME-DO-REPOSITORIO].git
+   git clone https://github.com/wdnhash/Sprint-2-WebDevelopment
    ```
 
 2. **Acesse a pasta do projeto:**
