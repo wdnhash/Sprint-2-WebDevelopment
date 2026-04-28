@@ -4,7 +4,7 @@ import mascoteImg from '../assets/images/mascote.png';
 import './Home.css';
 
 function Home({ userStats, onComplete }) {
-  const { name, streak, level, title, xp } = userStats;
+  const { name, streak, level, title, xp, avatar = 'fa-user' } = userStats;
   const [modalData, setModalData] = useState(null);
 
   // Calcula porcentagem do progresso de xp proximo nível (simulado que cada nível custa 100xp)
@@ -29,8 +29,8 @@ function Home({ userStats, onComplete }) {
       <header className="missions__header">
         <div className="missions__header-top">
           <div className="missions__header-identity">
-            <div className="missions__avatar">
-              <img src={mascoteImg} alt="Avatar do mascote" />
+            <div className="missions__avatar" style={{ backgroundColor: '#fff', color: 'var(--color-primary)', fontSize: '24px' }}>
+              <i className={`fa-solid ${avatar}`}></i>
             </div>
             <div className="missions__greeting">
               <p>Olá, {name}</p>

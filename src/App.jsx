@@ -12,8 +12,17 @@ function App() {
 
   // 1. Estado persistente com localStorage
   const [userStats, setUserStats] = useState(() => {
-    const savedData = localStorage.getItem('careQuestData');
-    return savedData ? JSON.parse(savedData) : {
+    try {
+      const savedData = localStorage.getItem('careQuestData');
+      if (savedData) {
+        return JSON.parse(savedData);
+      }
+    } catch (e) {
+      console.error("Erro ao ler do localStorage", e);
+    }
+    
+    // Retorna default em caso de erro ou sem dados
+    return {
       name: "Wenderson", 
       level: 1,
       title: "Iniciante",
@@ -101,11 +110,7 @@ function App() {
       </Routes>
 
       {/* Exibe a barra de navegação condicionalmente */}
-      {!hideBottomNav && BottomNav(
-        <div style={{ position: 'fixed', bottom: 0, width: '100%', background: '#fff', padding: '20px', textAlign: 'center', borderTop: '1px solid #ddd' }}>
-          Barra de Navegação em construção...
-        </div>
-      )}
+      {!hideBottomNav && <BottomNav />}
     </div>
   );
 }

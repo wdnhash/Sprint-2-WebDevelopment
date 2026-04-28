@@ -47,8 +47,7 @@ function Onboarding({ onFinish }) {
           </header>
 
           <section className="terms__notice" aria-label="Aviso de privacidade">
-            <p>Para criar sua jornada personalizada, precisamos processar algumas informações. Levamos sua privacidade a sério e seguimos
-      rigorosamente a LGPD. Seus dados de saúde são usados exclusivamente para melhorar sua experiênciano CareQuest.</p>
+            <p>Para criar sua jornada personalizada, precisamos processar algumas informações. Levamos sua privacidade a sério e seguimos rigorosamente a LGPD. Seus dados de saúde são usados exclusivamente para melhorar sua experiência no CareQuest.</p>
           </section>
 
           <fieldset className="terms__form">
@@ -60,8 +59,7 @@ function Onboarding({ onFinish }) {
                 onChange={(e) => setLgpdAccepted(e.target.checked)}
               />
               <span className="checkbox-row__text">
-                Li e concordo com os <a href="#termos" onClick={(e) => e.preventDefault()}>Termos de Uso</a> e <a href="#privacidade"
-      onClick={(e) => e.preventDefault()}>Política de Privacidade</a>. <br/>
+                Li e concordo com os <a href="#termos" onClick={(e) => e.preventDefault()}>Termos de Uso</a> e <a href="#privacidade" onClick={(e) => e.preventDefault()}>Política de Privacidade</a>. <br/>
                 <strong>(Obrigatório)</strong>
               </span>
             </label>
