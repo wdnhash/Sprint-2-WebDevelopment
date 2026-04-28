@@ -25,11 +25,9 @@ Conforme os requisitos da disciplina de **Web Development**:
 
 Você pode acessar a versão mais recente da aplicação rodando direto no navegador, sem precisar instalar nada, através do link abaixo:
 
-👉 **[INSERIR LINK DO VERCEL AQUI]**
+👉 **[Vercel](https://sprint-2-web-development.vercel.app/)**
 
 *(Professores: Recomendamos acessar o link acima simulando a visualização de um dispositivo móvel no navegador (F12 > Toggle Device Toolbar) para a melhor experiência, pois o App Shell foi desenhado com foco Mobile-First).*
-
----
 
 ## 💻 Como rodar o projeto localmente
 
@@ -68,9 +66,20 @@ A aplicação salva seu progresso no `localStorage` do navegador. Caso queira vi
 - Abrir o projeto em uma aba anônima do navegador.
 - Ou acessar o Console de Desenvolvedor (F12) > Application > Local Storage e excluir a chave `careQuestData`, recarregando a página em seguida.
 
+## 🔗 Links Importantes (Referências)
+
+- **[Protótipo Original (Figma)](https://www.figma.com/proto/iLP8PrNaU3wFyUkkEr8toQ/CareChallenge--Copy-?node-id=53-1193&t=V7Jo0HCJsQVLa3Vw-1)**: Design System e fluxos criados para a Sprint 1.
+- **[Repositório Original (HTML/CSS estático)](https://github.com/gmatsuna/1esps_challenge_front_end_2026_1_sem)**: Código base construído em html e css que serviu como fundação para a migração React nesta Sprint 2.
+
 ## 👥 Equipe
-- Wenderson da Silva Santos          RM: 567847
-- Douglas Taveira Vilella Roberto    RM: 567846
-- Fábio Alexandre Barbosa Filho      RM: 567419
-- Gilberto Hideaki Matsunaga         RM: 568191
-- Igor Davi Avelar Rosa Cesário      RM: 568163
+| Nome | RM |
+|------|----|
+| Douglas Taveira Vilella Roberto | 567846 |
+| Fábio Alexandre Barbosa Filho   | 567419 |
+| Gilberto Hideaki Matsunaga      | 568191 |
+| Igor Davi Avelar Rosa Cesário   | 568163 |
+| Wenderson da Silva Santos       | 567847 |
+
+## 📄 Licença
+
+Projeto acadêmico desenvolvido para fins educacionais — FIAP / Care Plus, 2026.
