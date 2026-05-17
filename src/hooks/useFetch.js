@@ -1,33 +1,38 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 export function useFetch(fetcher, deps = []) {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const cancelledRef = useRef(false);
+  const fetchKey = useMemo(() => JSON.stringify(deps), [deps]);
+  const [state, setState] = useState({
+    key: fetchKey,
+    data: null,
+    loading: true,
+    error: null,
+  });
+
+  // Padrão oficial do React: resetar estado durante render quando a key muda.
+  // Evita o setState síncrono dentro do useEffect (cascading renders).
+  if (state.key !== fetchKey) {
+    setState({ key: fetchKey, data: null, loading: true, error: null });
+  }
 
   useEffect(() => {
-    cancelledRef.current = false;
-    setLoading(true);
-    setError(null);
+    let cancelled = false;
 
     fetcher()
       .then((result) => {
-        if (cancelledRef.current) return;
-        setData(result);
-        setLoading(false);
+        if (cancelled) return;
+        setState({ key: fetchKey, data: result, loading: false, error: null });
       })
       .catch((err) => {
-        if (cancelledRef.current) return;
-        setError(err);
-        setLoading(false);
+        if (cancelled) return;
+        setState({ key: fetchKey, data: null, loading: false, error: err });
       });
 
     return () => {
-      cancelledRef.current = true;
+      cancelled = true;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, deps);
+  }, [fetchKey]);
 
-  return { data, loading, error };
+  return { data: state.data, loading: state.loading, error: state.error };
 }
