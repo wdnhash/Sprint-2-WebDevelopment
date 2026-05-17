@@ -1,0 +1,82 @@
+[
+  {
+    "id": "r-1",
+    "title": "1 Mês Premium Headspace",
+    "category": "Bem-estar",
+    "brand": "Headspace",
+    "icon": "fa-headphones",
+    "cost": 500,
+    "stock": 10,
+    "description": "Acesso completo ao app de meditação por 30 dias."
+  },
+  {
+    "id": "r-2",
+    "title": "Desconto em Tênis",
+    "category": "Esporte",
+    "brand": "Centauro",
+    "icon": "fa-shoe-prints",
+    "cost": 200,
+    "stock": 25,
+    "description": "20% OFF em qualquer tênis de corrida."
+  },
+  {
+    "id": "r-3",
+    "title": "E-book de Receitas Fit",
+    "category": "Nutrição",
+    "brand": "CarePlus",
+    "icon": "fa-book",
+    "cost": 100,
+    "stock": 999,
+    "description": "50 receitas saudáveis e práticas para o dia a dia."
+  },
+  {
+    "id": "r-4",
+    "title": "Consulta Nutricionista Online",
+    "category": "Saúde",
+    "brand": "CarePlus",
+    "icon": "fa-user-doctor",
+    "cost": 800,
+    "stock": 5,
+    "description": "Sessão de 45 min com profissional credenciado."
+  },
+  {
+    "id": "r-5",
+    "title": "Garrafa Térmica CareQuest",
+    "category": "Brinde",
+    "brand": "CarePlus",
+    "icon": "fa-bottle-water",
+    "cost": 350,
+    "stock": 15,
+    "description": "Garrafa exclusiva de 750ml com a marca CareQuest."
+  },
+  {
+    "id": "r-6",
+    "title": "Aulas de Yoga (1 mês)",
+    "category": "Bem-estar",
+    "brand": "YogaFlow",
+    "icon": "fa-spa",
+    "cost": 600,
+    "stock": 8,
+    "description": "Acesso ilimitado a aulas online por 30 dias."
+  },
+  {
+    "id": "r-7",
+    "title": "Cesta de Frutas Orgânicas",
+    "category": "Nutrição",
+    "brand": "BioFood",
+    "icon": "fa-basket-shopping",
+    "cost": 450,
+    "stock": 12,
+    "description": "Cesta sazonal com frutas selecionadas, entrega na sua casa."
+  },
+  {
+    "id": "r-8",
+    "title": "Smartband CarePlus",
+    "category": "Tecnologia",
+    "brand": "CarePlus",
+    "icon": "fa-stopwatch",
+    "cost": 1500,
+    "stock": 3,
+    "description": "Pulseira fitness com monitor de batimentos e passos."
+  }
+]
