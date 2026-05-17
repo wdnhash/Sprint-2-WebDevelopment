@@ -125,8 +125,7 @@ function App() {
 
   return (
     <div
-      className={hideBottomNav ? '' : 'lg:pl-64'}
-      style={{ minHeight: '100vh', paddingBottom: hideBottomNav ? '0' : '80px' }}
+      className={`min-h-screen ${hideBottomNav ? '' : 'pb-20 lg:pb-0 lg:pl-64'}`}
     >
 
       <Routes>

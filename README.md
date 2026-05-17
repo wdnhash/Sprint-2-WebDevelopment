@@ -1,42 +1,102 @@
 # CareQuest – Jornada Gamificada 🛡️
 
-Bem-vindo ao repositório Front-End do **CareQuest**, a solução gamificada desenvolvida para o Challenge Care Plus (Sprint 2 - Web Development). O objetivo deste projeto é transformar a saúde preventiva em uma jornada envolvente e recompensadora, incentivando hábitos saudáveis através de missões diárias, trilhas de saúde e um sistema de recompensas.
+Bem-vindo ao repositório Front-End do **CareQuest**, a solução gamificada desenvolvida para o Challenge Care Plus. O objetivo deste projeto é transformar a saúde preventiva em uma jornada envolvente e recompensadora, incentivando hábitos saudáveis através de missões diárias, trilhas de saúde, conquistas e um sistema de recompensas.
+
+> **📌 Sprint 3 – Entrega Final:** Esta versão evolui a aplicação React da Sprint 2 com **TailwindCSS**, **consumo de API local (JSON)**, **novas funcionalidades interativas** (formulário de check-in, dashboard de progresso, trilhas e conquistas), **layout adaptativo para Desktop/Tablet/Mobile** e **CSS Grid avançado**.
 
 ## 🚀 Tecnologias Utilizadas
 
-Este projeto foi migrado de um protótipo estático (HTML/CSS) para uma aplicação moderna e componentizada utilizando:
+- **[React 19](https://react.dev/)** – Biblioteca para construção de interfaces declarativas.
+- **[Vite](https://vitejs.dev/)** – Build tool moderna e ultrarrápida.
+- **[React Router DOM](https://reactrouter.com/)** – Roteamento SPA com proteção de rotas.
+- **[TailwindCSS 3](https://tailwindcss.com/)** – Estilização utilitária moderna e responsiva.
+- **CSS3 Customizado + CSS Grid Layout** – Design system híbrido com variáveis globais.
+- **[Bootstrap 5](https://getbootstrap.com/)** – Grid e utilitários complementares.
+- **[FontAwesome](https://fontawesome.com/) & [LineIcons](https://lineicons.com/)** – Bibliotecas de ícones.
 
-- **[React 19](https://react.dev/)**: Biblioteca JavaScript para construção de interfaces de usuário dinâmicas.
-- **[Vite](https://vitejs.dev/)**: Ferramenta de build super rápida e otimizada para o ecossistema moderno.
-- **[React Router DOM](https://reactrouter.com/)**: Gerenciamento de rotas SPA (Single Page Application) protegidas e públicas.
-- **CSS3 (Custom Properties/Variables)**: Estilização componentizada mantendo total fidelidade ao design system original do protótipo, garantindo consistência visual.
-- **[Bootstrap 5](https://getbootstrap.com/)**: Sistema de grid e utilitários base.
-- **[FontAwesome](https://fontawesome.com/) & [LineIcons](https://lineicons.com/)**: Bibliotecas de ícones de alta qualidade para a interface gamificada.
+## 🌟 Funcionalidades da Sprint 3
 
-## 🌟 Funcionalidades Implementadas (Sprint 2)
+### 🔌 Consumo de API local (JSON)
+- Arquivos em `/public/api/`: `missions.json`, `rewards.json`, `trails.json`, `achievements.json`.
+- Camada de serviço em `src/services/api.js` com `fetch` nativo.
+- Hook customizado `useFetch` (`src/hooks/useFetch.js`) que entrega `data`, `loading` e `error` de forma declarativa.
 
-Conforme os requisitos da disciplina de **Web Development**:
-1. **Arquitetura React + Vite**: Projeto totalmente estruturado com componentes reutilizáveis (`Home`, `Onboarding`, `Profile`, `Wallet`, `BottomNav`).
-2. **Estado Global e Persistência (Local Storage)**: Lógica implementada no `App.jsx` para salvar o progresso do usuário (XP, Pontos, Streak, Nível, Nome e Avatar), mantendo os dados mesmo após recarregar a página.
-3. **Fidelidade Visual ao Protótipo**: Integração minuciosa do CSS original com variáveis globais (`index.css`), garantindo que o React seja visualmente idêntico ou superior ao protótipo HTML da Sprint 1.
-4. **Interatividade e Eventos**: Manipulação do DOM via React (Hooks como `useState` e `useEffect`), como a barra de XP dinâmica e a edição de avatar/nome na tela de Perfil.
+### 🎯 Tela Inicial (Missões + Dashboard)
+- **Drop-down** de filtro por categoria (movimento, alimentação, mente, sono).
+- **Tabs** entre missões Diárias e Semanais.
+- **Dashboard de progresso** com gráfico SVG nativo (XP/PTS, 7/14/30 dias).
+- Persistência de missões já concluídas evita pontuação duplicada.
+
+### 🛤️ Trilhas e Conquistas (nova tela)
+- Página `/trilhas` com cards de trilhas + grid de badges/conquistas.
+- **CSS Grid avançado**: layout 2 colunas em tablet, 3-4 colunas em desktop.
+- Conquistas avaliadas automaticamente a partir do estado do usuário (XP, nível, streak, recompensas resgatadas).
+
+### 💼 Carteira de Recompensas
+- Consumo dinâmico do catálogo via `/api/rewards.json`.
+- **Busca** por título/marca + **drop-down** de categoria.
+- Fluxo de resgate funcional (desconta pontos, persiste no `localStorage`).
+- Aba "Histórico" lista recompensas resgatadas.
+
+### 📝 Check-in Diário (formulário)
+- Formulário multi-input no Perfil (humor, horas de sono, copos de água, atividade, notas).
+- **Validação de campos** com mensagens de erro inline.
+- Recompensa de XP/PTS calculada com base nas métricas do dia.
+- Modal acessível (fecha com ESC, focus management).
+
+### 📱 Layout Adaptativo (Mobile-first + Desktop)
+- **Mobile/Tablet**: app shell mobile-first com bottom navigation flutuante.
+- **Desktop (≥1024px)**: sidebar lateral fixa substituindo a bottom nav, com o conteúdo limitado a `max-w-shell` (768px) e centralizado.
+- Breakpoints Tailwind: `sm`, `md`, `lg`.
+
+### ♿ Acessibilidade
+- `role`, `aria-label`, `aria-pressed`, `aria-modal` e `aria-current` aplicados onde relevante.
+- HTML semântico (`<header>`, `<main>`, `<nav>`, `<section>`, `<article>`, `<fieldset>`).
+- Foco visível e navegação por teclado (ESC fecha modais).
+
+## 📂 Estrutura do Projeto
+
+```
+src/
+├── App.jsx                       # Estado global, rotas e ações
+├── index.css                     # Variáveis CareQuest + diretivas Tailwind
+├── components/
+│   ├── CheckInForm.jsx           # Formulário de check-in diário
+│   ├── MissionCompleteModal.jsx  # Modal de recompensa (Tailwind)
+│   ├── ProgressDashboard.jsx     # Gráfico SVG de XP/pontos
+│   └── layout/
+│       ├── BottomNav.jsx         # Bottom nav (mobile) + Sidebar (desktop)
+│       └── BottomNav.css
+├── hooks/
+│   └── useFetch.js               # Hook reutilizável de fetch
+├── services/
+│   └── api.js                    # Camada de serviço das APIs locais
+└── pages/
+    ├── Home.jsx                  # Missões + Dashboard
+    ├── Wallet.jsx                # Recompensas
+    ├── Trails.jsx                # Trilhas + Conquistas (nova)
+    ├── Profile.jsx               # Perfil + Check-in
+    └── Onboarding.jsx            # Fluxo inicial (LGPD + Trilha)
+public/
+└── api/                          # API JSON local
+    ├── missions.json
+    ├── rewards.json
+    ├── trails.json
+    └── achievements.json
+```
 
 ## 🌐 Acesso Online (Deploy)
 
-Você pode acessar a versão mais recente da aplicação rodando direto no navegador, sem precisar instalar nada, através do link abaixo:
-
 👉 **[Vercel](https://sprint-2-web-development.vercel.app/)**
 
-*(Professores: Recomendamos acessar o link acima simulando a visualização de um dispositivo móvel no navegador (F12 > Toggle Device Toolbar) para a melhor experiência, pois o App Shell foi desenhado com foco Mobile-First).*
+*(Recomendamos acessar com Toggle Device Toolbar (F12) para experiência mobile, ou em tela cheia no desktop para ver o layout com sidebar lateral.)*
 
 ## 💻 Como rodar o projeto localmente
 
-Caso deseje avaliar o código-fonte e rodar a aplicação em sua própria máquina, siga os passos abaixo.
-
 ### Pré-requisitos
-Certifique-se de ter o **[Node.js](https://nodejs.org/)** (versão 18+ recomendada) instalado em seu computador.
+- **[Node.js](https://nodejs.org/)** versão **18+**.
 
-### Passo a passo da Instalação
+### Passo a passo
 
 1. **Clone o repositório:**
    ```bash
@@ -45,7 +105,7 @@ Certifique-se de ter o **[Node.js](https://nodejs.org/)** (versão 18+ recomenda
 
 2. **Acesse a pasta do projeto:**
    ```bash
-   cd sprint2-webdev
+   cd Sprint-2-WebDevelopment
    ```
 
 3. **Instale as dependências:**
@@ -58,20 +118,37 @@ Certifique-se de ter o **[Node.js](https://nodejs.org/)** (versão 18+ recomenda
    npm run dev
    ```
 
-5. **Acesse no navegador:**
-   Abra o endereço `http://localhost:5173` (ou a porta indicada no terminal) em seu navegador.
+5. **Acesse no navegador:** `http://localhost:5173`
 
 ### Como testar o Onboarding novamente?
-A aplicação salva seu progresso no `localStorage` do navegador. Caso queira visualizar as telas iniciais de "Boas-vindas" e "LGPD" do zero, basta:
-- Abrir o projeto em uma aba anônima do navegador.
-- Ou acessar o Console de Desenvolvedor (F12) > Application > Local Storage e excluir a chave `careQuestData`, recarregando a página em seguida.
+A aplicação salva seu progresso no `localStorage`. Para revisitar as telas iniciais:
+- Abrir em aba anônima, **ou**
+- F12 → Application → Local Storage → excluir a chave `careQuestData` → recarregar.
 
-## 🔗 Links Importantes (Referências)
+## 🧪 Checklist Sprint 3 (Web Development + Front-End Design)
 
-- **[Protótipo Original (Figma)](https://www.figma.com/proto/iLP8PrNaU3wFyUkkEr8toQ/CareChallenge--Copy-?node-id=53-1193&t=V7Jo0HCJsQVLa3Vw-1)**: Design System e fluxos criados para a Sprint 1.
-- **[Repositório Original (HTML/CSS estático)](https://github.com/gmatsuna/1esps_challenge_front_end_2026_1_sem)**: Código base construído em html e css que serviu como fundação para a migração React nesta Sprint 2.
+| Requisito | Onde verificar |
+|---|---|
+| ✅ Consumo de API (JSON Local) | `src/services/api.js` + `public/api/*.json` |
+| ✅ TailwindCSS | `tailwind.config.js` + classes nos componentes novos |
+| ✅ CSS Grid Layout avançado | `Trails.jsx` (grid de conquistas), `Wallet.jsx` |
+| ✅ Formulário interativo | `components/CheckInForm.jsx` |
+| ✅ Modal | `components/MissionCompleteModal.jsx`, `CheckInForm.jsx` |
+| ✅ Drop-down | Filtros em `Home.jsx`, `Wallet.jsx`, `ProgressDashboard.jsx` |
+| ✅ Manipulação de eventos | Cliques, submits, ESC, change events |
+| ✅ Componentização e props | `pages/*` ↔ `components/*` |
+| ✅ localStorage / desestruturação | `App.jsx`, hooks em todas as páginas |
+| ✅ Responsividade Desktop/Tablet/Mobile | Breakpoints `sm`, `md`, `lg` |
+| ✅ Deploy Vercel | Link acima |
+| ✅ Versionamento Git semântico | `git log` |
+
+## 🔗 Links Importantes
+
+- **[Protótipo Original (Figma)](https://www.figma.com/proto/iLP8PrNaU3wFyUkkEr8toQ/CareChallenge--Copy-?node-id=53-1193&t=V7Jo0HCJsQVLa3Vw-1)**
+- **[Repositório Original (HTML/CSS Sprint 1)](https://github.com/gmatsuna/1esps_challenge_front_end_2026_1_sem)**
 
 ## 👥 Equipe
+
 | Nome | RM |
 |------|----|
 | Douglas Taveira Vilella Roberto | 567846 |
