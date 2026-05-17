@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import MissionCompleteModal from '../components/MissionCompleteModal';
+import ProgressDashboard from '../components/ProgressDashboard';
 import { useFetch } from '../hooks/useFetch';
 import { getMissions } from '../services/api';
 import './Home.css';
@@ -13,7 +14,7 @@ const CATEGORIES = [
 ];
 
 function Home({ userStats, onComplete }) {
-  const { name, streak, level, title, xp, avatar = 'fa-user', completedMissions = [] } = userStats;
+  const { name, streak, level, title, xp, avatar = 'fa-user', completedMissions = [], xpHistory = [] } = userStats;
   const [modalData, setModalData] = useState(null);
   const [category, setCategory] = useState('todas');
   const [tab, setTab] = useState('daily');
@@ -67,6 +68,8 @@ function Home({ userStats, onComplete }) {
       </header>
 
       <main className="missions__main">
+
+        <ProgressDashboard history={xpHistory} />
 
         {/* Tabs Diária / Semanal + Filtro */}
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
