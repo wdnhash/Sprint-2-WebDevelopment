@@ -50,18 +50,34 @@ function Home({ userStats, onComplete }) {
               <h1>Vamos nos cuidar?</h1>
             </div>
           </div>
-          <span className="missions__streak" aria-label={`Sequência atual de ${streak} dias`}>
+          <span
+            className={`missions__streak ${streak >= 7 ? 'missions__streak--hot' : ''}`}
+            aria-label={`Sequência atual de ${streak} dias`}
+          >
             <i className="fa-solid fa-fire" aria-hidden="true"></i>
-            {streak} dias
+            <span className="cq-numeric">{streak}</span> dias
           </span>
+        </div>
+
+        {/* XP herói — métrica gigante que ancora visualmente */}
+        <div className="missions__xp-hero">
+          <strong className="cq-numeric">{xp.toLocaleString('pt-BR')}</strong>
+          <span>XP</span>
+          <small>Nível {level} · {title}</small>
         </div>
 
         <div className="missions__progress">
           <div className="missions__progress-text">
-            <span className="level">Nível {level}</span>
-            <span className="classification">{title}</span>
+            <span className="level">{Math.round(xpProgress)}% até o nível {level + 1}</span>
+            <span className="classification cq-numeric">{xp % 100}/100</span>
           </div>
-          <div className="missions__progress-bar" role="progressbar" aria-valuenow={xpProgress} aria-valuemin="0" aria-valuemax="100">
+          <div
+            className={`missions__progress-bar ${xpProgress >= 90 ? 'missions__progress-bar--almost' : ''}`}
+            role="progressbar"
+            aria-valuenow={xpProgress}
+            aria-valuemin="0"
+            aria-valuemax="100"
+          >
             <span style={{ width: `${xpProgress}%` }}></span>
           </div>
         </div>
@@ -144,23 +160,28 @@ function Home({ userStats, onComplete }) {
             return (
               <button
                 key={mission.id}
-                className={`mission-card ${done ? 'opacity-60' : ''}`}
+                className={`mission-card ${done ? 'mission-card--done' : ''}`}
+                data-category={mission.category}
                 onClick={() => handleMissionClick(mission)}
                 aria-label={`Missão: ${mission.title}. +${mission.xp} XP, +${mission.pts} pontos.${done ? ' Já concluída.' : ''}`}
                 disabled={done}
               >
+                {done && (
+                  <span className="mission-card__check" aria-hidden="true">
+                    <i className="fa-solid fa-check"></i>
+                  </span>
+                )}
                 <div className="mission-card__body">
                   <div className="mission-card__chips">
                     <span className="chip">{tab === 'weekly' ? 'Semanal' : 'Diária'}</span>
                     <span className={`chip ${mission.chipColor}`}>{mission.type}</span>
-                    {done && <span className="chip chip--green"><i className="fa-solid fa-check mr-1" aria-hidden="true"></i>Feita</span>}
                   </div>
                   <h3 className="mission-card__title">{mission.title}</h3>
                   <p className="mission-card__desc">{mission.desc}</p>
                 </div>
                 <div className="mission-card__rewards">
-                  <span className="mission-card__xp">+{mission.xp} XP</span>
-                  <span className="mission-card__pts">+{mission.pts} pts</span>
+                  <span className="mission-card__xp cq-numeric">+{mission.xp} XP</span>
+                  <span className="mission-card__pts cq-numeric">+{mission.pts} pts</span>
                 </div>
               </button>
             );
