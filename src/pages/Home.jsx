@@ -1,31 +1,43 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import MissionCompleteModal from '../components/MissionCompleteModal';
-import mascoteImg from '../assets/images/mascote.png';
+import { useFetch } from '../hooks/useFetch';
+import { getMissions } from '../services/api';
 import './Home.css';
 
-function Home({ userStats, onComplete }) {
-  const { name, streak, level, title, xp, avatar = 'fa-user' } = userStats;
-  const [modalData, setModalData] = useState(null);
+const CATEGORIES = [
+  { value: 'todas', label: 'Todas as categorias' },
+  { value: 'movimento', label: 'Movimento' },
+  { value: 'alimentacao', label: 'Alimentação' },
+  { value: 'mente', label: 'Mente' },
+  { value: 'sono', label: 'Sono' },
+];
 
-  // Calcula porcentagem do progresso de xp proximo nível (simulado que cada nível custa 100xp)
+function Home({ userStats, onComplete }) {
+  const { name, streak, level, title, xp, avatar = 'fa-user', completedMissions = [] } = userStats;
+  const [modalData, setModalData] = useState(null);
+  const [category, setCategory] = useState('todas');
+  const [tab, setTab] = useState('daily');
+
+  const { data, loading, error } = useFetch(getMissions, []);
+
   const xpProgress = Math.min((xp % 100) / 100 * 100, 100);
 
-  // Array de missões simulando dados que viriam de uma API
-  const dailyMissions = [
-    { id: 1, type: "MOVIMENTO NA ROTINA", chipColor: "chip--green", title: "Caminhar 15 minutos", desc: "Dê uma volta no quarteirão ou caminhe pela casa.", xp: 20, pts: 15 },
-    { id: 2, type: "ALIMENTAÇÃO MELHOR", chipColor: "chip--red", title: "Beber 2L de água", desc: "Mantenha-se hidratado ao longo do dia.", xp: 15, pts: 10 },
-    { id: 3, type: "MENTE TRANQUILA", chipColor: "chip--purple", title: "Meditação de 5 min", desc: "Tire um momento para respirar fundo.", xp: 30, pts: 25 },
-  ];
+  const missions = useMemo(() => {
+    if (!data) return [];
+    const list = tab === 'weekly' ? data.weekly : data.daily;
+    if (category === 'todas') return list;
+    return list.filter((m) => m.category === category);
+  }, [data, tab, category]);
 
-  const handleMissionClick = (xpEarned, ptsEarned) => {
-    onComplete(xpEarned, ptsEarned); 
-    setModalData({ xp: xpEarned, pts: ptsEarned }); 
+  const handleMissionClick = (mission) => {
+    if (completedMissions.includes(mission.id)) return;
+    onComplete(mission.xp, mission.pts, mission.id);
+    setModalData({ xp: mission.xp, pts: mission.pts, title: mission.title });
   };
 
   return (
-    <div style={{ backgroundColor: 'var(--color-bg)', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      
-      {/* CABEÇALHO DO USUÁRIO */}
+    <div className="lg:max-w-shell lg:mx-auto" style={{ backgroundColor: 'var(--color-bg)', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+
       <header className="missions__header">
         <div className="missions__header-top">
           <div className="missions__header-identity">
@@ -55,40 +67,110 @@ function Home({ userStats, onComplete }) {
       </header>
 
       <main className="missions__main">
-        <h2>Missões de hoje</h2>
 
-        {/* LISTA DE MISSÕES */}
-        <div className="missions__list">
-          {dailyMissions.map((mission) => (
-            <button 
-              key={mission.id} 
-              className="mission-card"
-              onClick={() => handleMissionClick(mission.xp, mission.pts)}
-              aria-label={`Missão diária: ${mission.title}. +${mission.xp} XP, +${mission.pts} pontos.`}
+        {/* Tabs Diária / Semanal + Filtro */}
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="inline-flex rounded-full bg-white p-1 shadow-card self-start">
+            <button
+              type="button"
+              onClick={() => setTab('daily')}
+              className={`px-4 py-1.5 rounded-full text-sm font-bold transition ${
+                tab === 'daily'
+                  ? 'bg-cq-primary text-white'
+                  : 'text-cq-text-muted hover:text-cq-text'
+              }`}
+              aria-pressed={tab === 'daily'}
             >
-              <div className="mission-card__body">
-                <div className="mission-card__chips">
-                  <span className="chip">Diária</span>
-                  <span className={`chip ${mission.chipColor}`}>{mission.type}</span>
-                </div>
-                <h3 className="mission-card__title">{mission.title}</h3>
-                <p className="mission-card__desc">{mission.desc}</p>
-              </div>
-              <div className="mission-card__rewards">
-                <span className="mission-card__xp">+{mission.xp} XP</span>
-                <span className="mission-card__pts">+{mission.pts} pts</span>
-              </div>
+              Diárias
             </button>
-          ))}
+            <button
+              type="button"
+              onClick={() => setTab('weekly')}
+              className={`px-4 py-1.5 rounded-full text-sm font-bold transition ${
+                tab === 'weekly'
+                  ? 'bg-cq-primary text-white'
+                  : 'text-cq-text-muted hover:text-cq-text'
+              }`}
+              aria-pressed={tab === 'weekly'}
+            >
+              Semanais
+            </button>
+          </div>
+
+          <div className="relative">
+            <label htmlFor="category-filter" className="sr-only">Filtrar missões por categoria</label>
+            <select
+              id="category-filter"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              className="w-full sm:w-auto appearance-none bg-white border border-gray-200 rounded-full pl-4 pr-10 py-2 text-sm font-medium text-cq-text shadow-card focus:outline-none focus:ring-2 focus:ring-cq-primary"
+            >
+              {CATEGORIES.map((opt) => (
+                <option key={opt.value} value={opt.value}>{opt.label}</option>
+              ))}
+            </select>
+            <i className="fa-solid fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-xs text-cq-text-muted pointer-events-none" aria-hidden="true"></i>
+          </div>
+        </div>
+
+        <h2>{tab === 'weekly' ? 'Desafios da semana' : 'Missões de hoje'}</h2>
+
+        {loading && (
+          <div className="flex items-center justify-center py-10 text-cq-text-muted">
+            <i className="fa-solid fa-spinner fa-spin mr-2" aria-hidden="true"></i>
+            Carregando missões...
+          </div>
+        )}
+
+        {error && (
+          <div role="alert" className="rounded-xl bg-red-50 border border-red-200 text-red-700 p-4 text-sm">
+            Não foi possível carregar as missões. Tente recarregar a página.
+          </div>
+        )}
+
+        {!loading && !error && missions.length === 0 && (
+          <div className="text-center py-10 text-cq-text-muted">
+            <i className="fa-solid fa-leaf text-3xl mb-2 block" aria-hidden="true"></i>
+            Nenhuma missão nessa categoria por hoje.
+          </div>
+        )}
+
+        <div className="missions__list">
+          {missions.map((mission) => {
+            const done = completedMissions.includes(mission.id);
+            return (
+              <button
+                key={mission.id}
+                className={`mission-card ${done ? 'opacity-60' : ''}`}
+                onClick={() => handleMissionClick(mission)}
+                aria-label={`Missão: ${mission.title}. +${mission.xp} XP, +${mission.pts} pontos.${done ? ' Já concluída.' : ''}`}
+                disabled={done}
+              >
+                <div className="mission-card__body">
+                  <div className="mission-card__chips">
+                    <span className="chip">{tab === 'weekly' ? 'Semanal' : 'Diária'}</span>
+                    <span className={`chip ${mission.chipColor}`}>{mission.type}</span>
+                    {done && <span className="chip chip--green"><i className="fa-solid fa-check mr-1" aria-hidden="true"></i>Feita</span>}
+                  </div>
+                  <h3 className="mission-card__title">{mission.title}</h3>
+                  <p className="mission-card__desc">{mission.desc}</p>
+                </div>
+                <div className="mission-card__rewards">
+                  <span className="mission-card__xp">+{mission.xp} XP</span>
+                  <span className="mission-card__pts">+{mission.pts} pts</span>
+                </div>
+              </button>
+            );
+          })}
         </div>
       </main>
 
-      {/* RENDERIZA O MODAL SE TIVER DADOS */}
       {modalData && (
-        <MissionCompleteModal 
-          xp={modalData.xp} 
-          pts={modalData.pts} 
-          onClose={() => setModalData(null)} 
+        <MissionCompleteModal
+          xp={modalData.xp}
+          pts={modalData.pts}
+          title={modalData.title}
+          onClose={() => setModalData(null)}
         />
       )}
     </div>

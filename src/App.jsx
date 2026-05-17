@@ -23,14 +23,18 @@ function App() {
     
     // Retorna default em caso de erro ou sem dados
     return {
-      name: "Wenderson", 
+      name: "Wenderson",
       level: 1,
       title: "Iniciante",
       carePoints: 0,
       xp: 0,
       streak: 0,
       hasCompletedOnboarding: false,
-      trilha: null
+      trilha: null,
+      completedMissions: [],
+      claimedRewards: [],
+      xpHistory: [],
+      checkIns: []
     };
   });
 
@@ -48,11 +52,47 @@ function App() {
     }));
   };
 
-  const completeMission = (xpEarned, pointsEarned) => {
+  const completeMission = (xpEarned, pointsEarned, missionId = null) => {
+    setUserStats(prev => {
+      const completed = prev.completedMissions || [];
+      if (missionId && completed.includes(missionId)) {
+        return prev;
+      }
+      const newXp = prev.xp + xpEarned;
+      const newLevel = Math.floor(newXp / 100) + 1;
+      const today = new Date().toISOString().slice(0, 10);
+      const history = prev.xpHistory || [];
+      const lastEntry = history[history.length - 1];
+      const updatedHistory = lastEntry && lastEntry.date === today
+        ? [...history.slice(0, -1), { date: today, xp: lastEntry.xp + xpEarned, pts: lastEntry.pts + pointsEarned }]
+        : [...history, { date: today, xp: xpEarned, pts: pointsEarned }];
+
+      return {
+        ...prev,
+        xp: newXp,
+        level: newLevel,
+        carePoints: prev.carePoints + pointsEarned,
+        completedMissions: missionId ? [...completed, missionId] : completed,
+        xpHistory: updatedHistory.slice(-30)
+      };
+    });
+  };
+
+  const claimReward = (rewardId, cost) => {
+    setUserStats(prev => {
+      if (prev.carePoints < cost) return prev;
+      return {
+        ...prev,
+        carePoints: prev.carePoints - cost,
+        claimedRewards: [...(prev.claimedRewards || []), { id: rewardId, claimedAt: new Date().toISOString() }]
+      };
+    });
+  };
+
+  const registerCheckIn = (checkInData) => {
     setUserStats(prev => ({
       ...prev,
-      xp: prev.xp + xpEarned,
-      carePoints: prev.carePoints + pointsEarned
+      checkIns: [...(prev.checkIns || []).slice(-29), { ...checkInData, date: new Date().toISOString() }]
     }));
   };
 
@@ -90,13 +130,13 @@ function App() {
           } 
         />
         
-        <Route 
-          path="/carteira" 
+        <Route
+          path="/carteira"
           element={
-            userStats.hasCompletedOnboarding 
-              ? <Wallet userStats={userStats} /> 
+            userStats.hasCompletedOnboarding
+              ? <Wallet userStats={userStats} onClaimReward={claimReward} />
               : <Navigate to="/onboarding" replace />
-          } 
+          }
         />
         
         <Route 

@@ -183,6 +183,7 @@
 .chip--green   { background-color: #DCFCE7; color: #00A63E; }
 .chip--red     { background-color: #FFEDD4; color: #F54900; }
 .chip--purple  { background-color: #F3E8FF;  color: #9810FA;  }
+.chip--blue    { background-color: #DBEAFE; color: #1E40AF; }
 
 .mission-card__title {
     font-size: var(--fs-md);
