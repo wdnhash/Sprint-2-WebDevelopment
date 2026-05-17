@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import Wallet from './pages/Wallet';
 import Profile from './pages/Profile';
 import Onboarding from './pages/Onboarding';
+import Trails from './pages/Trails';
 import BottomNav from './components/layout/BottomNav';
 
 function App() {
@@ -107,7 +108,10 @@ function App() {
   const hideBottomNav = location.pathname === '/onboarding';
 
   return (
-    <div style={{ minHeight: '100vh', paddingBottom: hideBottomNav ? '0' : '80px' }}>
+    <div
+      className={hideBottomNav ? '' : 'lg:pl-64'}
+      style={{ minHeight: '100vh', paddingBottom: hideBottomNav ? '0' : '80px' }}
+    >
 
       <Routes>
         {/* ROTA PÚBLICA / ONBOARDING */}
@@ -139,13 +143,22 @@ function App() {
           }
         />
         
-        <Route 
-          path="/perfil" 
+        <Route
+          path="/trilhas"
           element={
-            userStats.hasCompletedOnboarding 
-              ? <Profile userStats={userStats} onUpdateUser={updateUser} /> 
+            userStats.hasCompletedOnboarding
+              ? <Trails userStats={userStats} />
               : <Navigate to="/onboarding" replace />
-          } 
+          }
+        />
+
+        <Route
+          path="/perfil"
+          element={
+            userStats.hasCompletedOnboarding
+              ? <Profile userStats={userStats} onUpdateUser={updateUser} onCheckIn={registerCheckIn} />
+              : <Navigate to="/onboarding" replace />
+          }
         />
       </Routes>
 
