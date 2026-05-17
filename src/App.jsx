@@ -91,10 +91,26 @@ function App() {
   };
 
   const registerCheckIn = (checkInData) => {
-    setUserStats(prev => ({
-      ...prev,
-      checkIns: [...(prev.checkIns || []).slice(-29), { ...checkInData, date: new Date().toISOString() }]
-    }));
+    const { reward = { xp: 0, pts: 0 }, ...rest } = checkInData;
+    const today = new Date().toISOString().slice(0, 10);
+    setUserStats(prev => {
+      const newXp = prev.xp + reward.xp;
+      const newLevel = Math.floor(newXp / 100) + 1;
+      const history = prev.xpHistory || [];
+      const lastEntry = history[history.length - 1];
+      const updatedHistory = lastEntry && lastEntry.date === today
+        ? [...history.slice(0, -1), { date: today, xp: lastEntry.xp + reward.xp, pts: lastEntry.pts + reward.pts }]
+        : [...history, { date: today, xp: reward.xp, pts: reward.pts }];
+
+      return {
+        ...prev,
+        xp: newXp,
+        level: newLevel,
+        carePoints: prev.carePoints + reward.pts,
+        checkIns: [...(prev.checkIns || []).slice(-29), { ...rest, date: new Date().toISOString() }],
+        xpHistory: updatedHistory.slice(-30)
+      };
+    });
   };
 
   const updateUser = (newData) => {

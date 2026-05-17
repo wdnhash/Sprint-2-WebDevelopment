@@ -1,13 +1,27 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
+import CheckInForm from '../components/CheckInForm';
+import MissionCompleteModal from '../components/MissionCompleteModal';
 import './Profile.css';
 
-function Profile({ userStats, onUpdateUser }) {
+function Profile({ userStats, onUpdateUser, onCheckIn }) {
   // Recebe avatar do state (se existir), senão usa um padrão
-  const { name, title, level, streak, avatar = 'fa-user' } = userStats;
-  
+  const { name, title, level, streak, avatar = 'fa-user', checkIns = [] } = userStats;
+
   const [isEditing, setIsEditing] = useState(false);
   const [editName, setEditName] = useState(name);
   const [editAvatar, setEditAvatar] = useState(avatar);
+  const [showCheckIn, setShowCheckIn] = useState(false);
+  const [checkInReward, setCheckInReward] = useState(null);
+
+  const lastCheckIn = useMemo(() => checkIns[checkIns.length - 1], [checkIns]);
+  const today = new Date().toISOString().slice(0, 10);
+  const alreadyCheckedInToday = lastCheckIn && lastCheckIn.date?.slice(0, 10) === today;
+
+  const handleCheckInSubmit = (checkInData) => {
+    onCheckIn(checkInData);
+    setShowCheckIn(false);
+    setCheckInReward(checkInData.reward);
+  };
 
   const handleSave = () => {
     if (editName.trim() === '') return;
@@ -28,7 +42,7 @@ function Profile({ userStats, onUpdateUser }) {
   ];
 
   return (
-    <div style={{ backgroundColor: 'var(--color-bg)', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+    <div className="lg:max-w-shell lg:mx-auto" style={{ backgroundColor: 'var(--color-bg)', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       {/* HEADER DE PERFIL */}
       <header className="profile__header">
         <div className="profile__top">
@@ -110,6 +124,59 @@ function Profile({ userStats, onUpdateUser }) {
 
       {/* MENU DE OPÇÕES */}
       <main className="profile__main">
+
+        {/* CARD DE CHECK-IN */}
+        <section className="bg-white rounded-2xl p-5 shadow-card flex flex-col gap-3" aria-label="Check-in diário">
+          <div className="flex items-center justify-between gap-3">
+            <div>
+              <h2 className="text-base font-bold text-cq-text m-0">Check-in de hoje</h2>
+              <p className="text-xs text-cq-text-muted m-0 mt-0.5">
+                {alreadyCheckedInToday
+                  ? `Você já registrou hoje — humor: ${lastCheckIn?.mood || '—'}`
+                  : 'Registre como foi seu dia e ganhe XP extra.'}
+              </p>
+            </div>
+            <span
+              aria-hidden="true"
+              className={`w-10 h-10 rounded-full flex items-center justify-center text-lg ${
+                alreadyCheckedInToday
+                  ? 'bg-emerald-100 text-emerald-700'
+                  : 'bg-cq-primary/10 text-cq-primary'
+              }`}
+            >
+              <i className={`fa-solid ${alreadyCheckedInToday ? 'fa-check' : 'fa-clipboard-list'}`}></i>
+            </span>
+          </div>
+          <button
+            type="button"
+            onClick={() => setShowCheckIn(true)}
+            className={`py-2.5 px-4 rounded-xl text-sm font-bold transition ${
+              alreadyCheckedInToday
+                ? 'bg-cq-bg text-cq-text-muted hover:bg-gray-200'
+                : 'bg-cq-primary hover:bg-cq-primary-light text-white'
+            }`}
+          >
+            {alreadyCheckedInToday ? 'Refazer check-in' : 'Fazer check-in agora'}
+          </button>
+
+          {checkIns.length > 0 && (
+            <div className="grid grid-cols-3 gap-2 pt-2 border-t border-gray-100">
+              <div className="text-center">
+                <p className="text-[10px] text-cq-text-muted uppercase font-bold m-0">Check-ins</p>
+                <strong className="text-cq-text text-lg block">{checkIns.length}</strong>
+              </div>
+              <div className="text-center">
+                <p className="text-[10px] text-cq-text-muted uppercase font-bold m-0">Último humor</p>
+                <strong className="text-cq-text text-lg block capitalize">{lastCheckIn?.mood || '—'}</strong>
+              </div>
+              <div className="text-center">
+                <p className="text-[10px] text-cq-text-muted uppercase font-bold m-0">Água ontem</p>
+                <strong className="text-cq-text text-lg block">{lastCheckIn?.waterCups ?? 0}</strong>
+              </div>
+            </div>
+          )}
+        </section>
+
         <nav className="profile__menu" aria-label="Atalhos do perfil">
           <button className="profile__menu-item">
             <span className="profile__menu-content">
@@ -148,6 +215,22 @@ function Profile({ userStats, onUpdateUser }) {
           <span>Sair da conta</span>
         </button>
       </main>
+
+      {showCheckIn && (
+        <CheckInForm
+          onSubmit={handleCheckInSubmit}
+          onClose={() => setShowCheckIn(false)}
+        />
+      )}
+
+      {checkInReward && (
+        <MissionCompleteModal
+          xp={checkInReward.xp}
+          pts={checkInReward.pts}
+          title="Check-in registrado!"
+          onClose={() => setCheckInReward(null)}
+        />
+      )}
     </div>
   );
 }
