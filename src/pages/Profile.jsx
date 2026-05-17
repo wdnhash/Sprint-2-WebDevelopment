@@ -180,7 +180,7 @@ function Profile({ userStats, onUpdateUser, onCheckIn }) {
         <nav className="profile__menu" aria-label="Atalhos do perfil">
           <button className="profile__menu-item">
             <span className="profile__menu-content">
-              <span className="profile__menu-icon" aria-hidden="true">
+              <span className="profile__menu-icon profile__menu-icon--gray" aria-hidden="true">
                 <i className="fa-regular fa-bell"></i>
               </span>
               <span className="text">Notificações</span>

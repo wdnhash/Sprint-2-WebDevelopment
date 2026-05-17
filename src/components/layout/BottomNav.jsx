@@ -3,7 +3,7 @@ import './BottomNav.css';
 
 const NAV_ITEMS = [
   { path: '/', icon: 'lni lni-home-2', label: 'Início' },
-  { path: '/trilhas', icon: 'lni lni-target', label: 'Trilhas' },
+  { path: '/trilhas', icon: 'lni lni-route-1', label: 'Trilhas' },
   { path: '/carteira', icon: 'lni lni-wallet-1', label: 'Carteira' },
   { path: '/perfil', icon: 'lni lni-user-4', label: 'Perfil' },
 ];
