@@ -282,7 +282,6 @@
 /* Estado concluído */
 .mission-card--done {
     background-color: #FAFBFC;
-    opacity: 0.85;
 }
 
 .mission-card--done .mission-card__title {
@@ -292,20 +291,28 @@
     color: var(--color-text-muted);
 }
 
-.mission-card__check {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    background-color: var(--mission-accent);
-    color: #fff;
-    display: flex;
+.mission-card--done .mission-card__desc {
+    color: #9CA3AF;
+}
+
+.mission-card--done .mission-card__xp,
+.mission-card--done .mission-card__pts {
+    opacity: 0.55;
+    text-decoration: line-through;
+    text-decoration-thickness: 1.5px;
+}
+
+/* Chip "Concluída" — usa a accent color da categoria */
+.chip--done {
+    background-color: rgba(var(--mission-accent-rgb), 0.12);
+    color: var(--mission-accent);
+    display: inline-flex;
     align-items: center;
-    justify-content: center;
-    font-size: 13px;
-    box-shadow: 0 2px 8px rgba(var(--mission-accent-rgb), 0.4);
+    gap: 4px;
+}
+
+.chip--done i {
+    font-size: 9px;
 }
 
 .mission-card__body {

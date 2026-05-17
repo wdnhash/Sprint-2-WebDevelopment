@@ -136,34 +136,7 @@ function ProgressDashboard({ history = [] }) {
             />
           ))}
 
-          {/* Linha tracejada de média */}
-          {average > 0 && (
-            <g>
-              <line
-                x1={PAD_X}
-                x2={W - PAD_X}
-                y1={averageY}
-                y2={averageY}
-                stroke="#9CA3AF"
-                strokeWidth="1"
-                strokeDasharray="3 3"
-                opacity="0.7"
-              />
-              <text
-                x={W - PAD_X - 2}
-                y={averageY - 4}
-                textAnchor="end"
-                fontSize="8.5"
-                fontWeight="700"
-                fill="#6B7280"
-                style={{ fontVariantNumeric: 'tabular-nums', letterSpacing: '0.04em' }}
-              >
-                MÉDIA {average}
-              </text>
-            </g>
-          )}
-
-          {/* Barras */}
+          {/* Barras (renderizadas ANTES da linha de média para a média ficar por cima) */}
           {series.map((point, i) => {
             const value = point[metric];
             const barHeight = (value / max) * innerHeight;
@@ -214,6 +187,46 @@ function ProgressDashboard({ history = [] }) {
               </g>
             );
           })}
+
+          {/* Linha tracejada de média — renderizada POR CIMA das barras
+              com label em pill branco para garantir legibilidade */}
+          {average > 0 && (
+            <g>
+              <line
+                x1={PAD_X}
+                x2={W - PAD_X}
+                y1={averageY}
+                y2={averageY}
+                stroke="#1F2937"
+                strokeWidth="1.25"
+                strokeDasharray="4 3"
+                opacity="0.85"
+              />
+              {/* Pill branco de fundo do label */}
+              <rect
+                x={W - PAD_X - 62}
+                y={averageY - 11}
+                width="60"
+                height="14"
+                rx="7"
+                fill="#ffffff"
+                stroke="#1F2937"
+                strokeWidth="1"
+                opacity="0.95"
+              />
+              <text
+                x={W - PAD_X - 32}
+                y={averageY - 1}
+                textAnchor="middle"
+                fontSize="8.5"
+                fontWeight="700"
+                fill="#1F2937"
+                style={{ fontVariantNumeric: 'tabular-nums', letterSpacing: '0.05em' }}
+              >
+                MÉDIA {average}
+              </text>
+            </g>
+          )}
         </svg>
       </div>
 

@@ -166,14 +166,16 @@ function Home({ userStats, onComplete }) {
                 aria-label={`Missão: ${mission.title}. +${mission.xp} XP, +${mission.pts} pontos.${done ? ' Já concluída.' : ''}`}
                 disabled={done}
               >
-                {done && (
-                  <span className="mission-card__check" aria-hidden="true">
-                    <i className="fa-solid fa-check"></i>
-                  </span>
-                )}
                 <div className="mission-card__body">
                   <div className="mission-card__chips">
-                    <span className="chip">{tab === 'weekly' ? 'Semanal' : 'Diária'}</span>
+                    {done ? (
+                      <span className="chip chip--done">
+                        <i className="fa-solid fa-check" aria-hidden="true"></i>
+                        Concluída
+                      </span>
+                    ) : (
+                      <span className="chip">{tab === 'weekly' ? 'Semanal' : 'Diária'}</span>
+                    )}
                     <span className={`chip ${mission.chipColor}`}>{mission.type}</span>
                   </div>
                   <h3 className="mission-card__title">{mission.title}</h3>
