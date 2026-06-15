@@ -63,7 +63,8 @@ h1, h2, h3, .font-display {
 
 /* Utilitários Globais de Botões que você mencionou */
 .btn-primary-cta {
-  background-color: var(--color-primary);
+  /* Verde mais escuro para garantir contraste AA (4.5:1) com texto branco */
+  background-color: #167a5a;
   color: white;
   border: none;
   border-radius: 12px;
@@ -76,7 +77,7 @@ h1, h2, h3, .font-display {
 }
 
 .btn-primary-cta:hover {
-  background-color: var(--color-primary-light);
+  background-color: var(--color-primary);
   color: white;
 }
 
