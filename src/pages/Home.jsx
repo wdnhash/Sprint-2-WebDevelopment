@@ -3,6 +3,7 @@ import MissionCompleteModal from '../components/MissionCompleteModal';
 import ProgressDashboard from '../components/ProgressDashboard';
 import { useFetch } from '../hooks/useFetch';
 import { getMissions } from '../services/api';
+import { levelProgress } from '../lib/gamification';
 
 const CATEGORIES = [
   { value: 'todas', label: 'Todas as categorias' },
@@ -40,7 +41,7 @@ function Home({ userStats, onComplete }) {
 
   const { data, loading, error } = useFetch(getMissions, []);
 
-  const xpProgress = Math.min((xp % 100) / 100 * 100, 100);
+  const xpProgress = levelProgress(xp);
 
   const missions = useMemo(() => {
     if (!data) return [];

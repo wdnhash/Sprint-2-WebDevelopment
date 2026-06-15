@@ -8,6 +8,7 @@ import Onboarding from './pages/Onboarding';
 import Trails from './pages/Trails';
 import BottomNav from './components/layout/BottomNav';
 import Footer from './components/layout/Footer';
+import { calcLevel, appendXpHistory, todayKey, canAfford } from './lib/gamification';
 
 // Estado inicial do usuário — reutilizado no boot e ao sair da conta
 const DEFAULT_USER_STATS = {
@@ -64,28 +65,20 @@ function App() {
         return prev;
       }
       const newXp = prev.xp + xpEarned;
-      const newLevel = Math.floor(newXp / 100) + 1;
-      const today = new Date().toISOString().slice(0, 10);
-      const history = prev.xpHistory || [];
-      const lastEntry = history[history.length - 1];
-      const updatedHistory = lastEntry && lastEntry.date === today
-        ? [...history.slice(0, -1), { date: today, xp: lastEntry.xp + xpEarned, pts: lastEntry.pts + pointsEarned }]
-        : [...history, { date: today, xp: xpEarned, pts: pointsEarned }];
-
       return {
         ...prev,
         xp: newXp,
-        level: newLevel,
+        level: calcLevel(newXp),
         carePoints: prev.carePoints + pointsEarned,
         completedMissions: missionId ? [...completed, missionId] : completed,
-        xpHistory: updatedHistory.slice(-30)
+        xpHistory: appendXpHistory(prev.xpHistory || [], todayKey(), xpEarned, pointsEarned)
       };
     });
   };
 
   const claimReward = (rewardId, cost) => {
     setUserStats(prev => {
-      if (prev.carePoints < cost) return prev;
+      if (!canAfford(prev.carePoints, cost)) return prev;
       return {
         ...prev,
         carePoints: prev.carePoints - cost,
@@ -96,23 +89,15 @@ function App() {
 
   const registerCheckIn = (checkInData) => {
     const { reward = { xp: 0, pts: 0 }, ...rest } = checkInData;
-    const today = new Date().toISOString().slice(0, 10);
     setUserStats(prev => {
       const newXp = prev.xp + reward.xp;
-      const newLevel = Math.floor(newXp / 100) + 1;
-      const history = prev.xpHistory || [];
-      const lastEntry = history[history.length - 1];
-      const updatedHistory = lastEntry && lastEntry.date === today
-        ? [...history.slice(0, -1), { date: today, xp: lastEntry.xp + reward.xp, pts: lastEntry.pts + reward.pts }]
-        : [...history, { date: today, xp: reward.xp, pts: reward.pts }];
-
       return {
         ...prev,
         xp: newXp,
-        level: newLevel,
+        level: calcLevel(newXp),
         carePoints: prev.carePoints + reward.pts,
         checkIns: [...(prev.checkIns || []).slice(-29), { ...rest, date: new Date().toISOString() }],
-        xpHistory: updatedHistory.slice(-30)
+        xpHistory: appendXpHistory(prev.xpHistory || [], todayKey(), reward.xp, reward.pts)
       };
     });
   };

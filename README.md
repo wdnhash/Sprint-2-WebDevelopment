@@ -121,6 +121,19 @@ public/
 
 5. **Acesse no navegador:** `http://localhost:5173`
 
+### 🧪 Testes automatizados (Vitest)
+
+O projeto usa **[Vitest](https://vitest.dev/)** + **[Testing Library](https://testing-library.com/)** com ambiente `jsdom`.
+
+```bash
+npm test          # roda toda a suíte uma vez
+npm run test:watch # modo interativo (re-roda ao salvar)
+```
+
+Cobertura atual (19 testes):
+- **Unidade** — `src/lib/gamification.test.js`: nível, progresso, histórico de XP (agregação/limite/imutabilidade) e regra de resgate.
+- **Integração** — `src/pages/Onboarding.test.jsx`: fluxo completo de onboarding (3 etapas, validações e `onFinish`); `src/components/layout/Footer.test.jsx`: render e landmark do rodapé.
+
 ### Como testar o Onboarding novamente?
 A aplicação salva seu progresso no `localStorage`. Para revisitar as telas iniciais:
 - Abrir em aba anônima, **ou**
@@ -142,6 +155,7 @@ A aplicação salva seu progresso no `localStorage`. Para revisitar as telas ini
 | ✅ localStorage / desestruturação | `App.jsx`, hooks em todas as páginas |
 | ✅ Responsividade Desktop/Tablet/Mobile | Breakpoints `sm`, `md`, `lg` |
 | ✅ Deploy Vercel | Link acima |
+| ✅ Testes automatizados (Vitest) | `npm test` — unidade + integração |
 | ✅ Versionamento Git semântico | `git log` |
 
 ## 🔗 Links Importantes
