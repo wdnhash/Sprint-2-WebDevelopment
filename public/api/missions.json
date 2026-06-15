@@ -1,0 +1,78 @@
+{
+  "daily": [
+    {
+      "id": "d-1",
+      "type": "MOVIMENTO NA ROTINA",
+      "category": "movimento",
+      "chipColor": "chip--green",
+      "title": "Caminhar 15 minutos",
+      "desc": "Dê uma volta no quarteirão ou caminhe pela casa.",
+      "icon": "fa-person-walking",
+      "xp": 20,
+      "pts": 15,
+      "difficulty": "facil"
+    },
+    {
+      "id": "d-2",
+      "type": "ALIMENTAÇÃO MELHOR",
+      "category": "alimentacao",
+      "chipColor": "chip--red",
+      "title": "Beber 2L de água",
+      "desc": "Mantenha-se hidratado ao longo do dia.",
+      "icon": "fa-glass-water",
+      "xp": 15,
+      "pts": 10,
+      "difficulty": "facil"
+    },
+    {
+      "id": "d-3",
+      "type": "MENTE TRANQUILA",
+      "category": "mente",
+      "chipColor": "chip--purple",
+      "title": "Meditação de 5 min",
+      "desc": "Tire um momento para respirar fundo.",
+      "icon": "fa-brain",
+      "xp": 30,
+      "pts": 25,
+      "difficulty": "medio"
+    },
+    {
+      "id": "d-4",
+      "type": "SONO DE QUALIDADE",
+      "category": "sono",
+      "chipColor": "chip--blue",
+      "title": "Dormir 7h+ hoje",
+      "desc": "Ajuste o despertador e priorize o descanso.",
+      "icon": "fa-moon",
+      "xp": 25,
+      "pts": 20,
+      "difficulty": "medio"
+    }
+  ],
+  "weekly": [
+    {
+      "id": "w-1",
+      "type": "DESAFIO SEMANAL",
+      "category": "movimento",
+      "chipColor": "chip--green",
+      "title": "Caminhar 30 km na semana",
+      "desc": "Distribua entre os dias e mantenha o ritmo.",
+      "icon": "fa-shoe-prints",
+      "xp": 150,
+      "pts": 100,
+      "difficulty": "dificil"
+    },
+    {
+      "id": "w-2",
+      "type": "DESAFIO SEMANAL",
+      "category": "alimentacao",
+      "chipColor": "chip--red",
+      "title": "5 refeições saudáveis",
+      "desc": "Inclua frutas, verduras e proteínas magras.",
+      "icon": "fa-apple-whole",
+      "xp": 120,
+      "pts": 80,
+      "difficulty": "medio"
+    }
+  ]
+}

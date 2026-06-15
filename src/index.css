@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   /* Paleta CareQuest */
   --color-primary: #1C9770;
@@ -12,6 +16,9 @@
   --color-error: #E53935;
 
   /* Tipografia */
+  --font-display: 'Bricolage Grotesque', 'DM Sans', system-ui, sans-serif;
+  --font-body: 'DM Sans', system-ui, -apple-system, sans-serif;
+
   --fs-xs: 12px;
   --fs-sm: 14px;
   --fs-md: 16px;
@@ -22,11 +29,26 @@
 
 /* Reset Base e Tipografia */
 body {
-  font-family: 'Roboto', sans-serif;
+  font-family: var(--font-body);
   background-color: var(--color-bg);
   color: var(--color-text);
   margin: 0;
   padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Display font para títulos e métricas grandes */
+h1, h2, h3, .font-display {
+  font-family: var(--font-display);
+  letter-spacing: -0.01em;
+}
+
+/* Numéricos com largura fixa para alinhar em listas/cards */
+.tabular-nums,
+.cq-numeric {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum';
 }
 
 /* App Shell*/
@@ -49,9 +71,113 @@ body {
   font-weight: 700;
   width: 100%;
   transition: background-color 0.2s ease;
+  font-family: var(--font-display);
+  letter-spacing: -0.01em;
 }
 
 .btn-primary-cta:hover {
   background-color: var(--color-primary-light);
   color: white;
+}
+
+/* =============================================================
+   Atmosfera: noise SVG + mesh radial sutil
+   Aplicar em headers ou containers para sair do "flat AI look".
+   ============================================================= */
+
+/* Camada de ruído fractal — adiciona textura orgânica sem peso */
+.cq-noise {
+  position: relative;
+  isolation: isolate;
+}
+
+.cq-noise::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.06;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.6 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  mix-blend-mode: multiply;
+}
+
+.cq-noise > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Mesh radial em verdes — adiciona profundidade nos headers */
+.cq-mesh-light {
+  background-color: var(--color-surface);
+  background-image:
+    radial-gradient(circle at 15% 0%, rgba(122, 209, 195, 0.18) 0%, transparent 50%),
+    radial-gradient(circle at 100% 100%, rgba(147, 203, 82, 0.14) 0%, transparent 45%),
+    radial-gradient(circle at 50% 50%, rgba(28, 151, 112, 0.04) 0%, transparent 70%);
+}
+
+.cq-mesh-primary {
+  background-color: var(--color-primary);
+  background-image:
+    radial-gradient(circle at 10% 0%, rgba(122, 209, 195, 0.45) 0%, transparent 55%),
+    radial-gradient(circle at 100% 100%, rgba(147, 203, 82, 0.30) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(255, 255, 255, 0.05) 0%, transparent 70%);
+}
+
+/* Body com noise muito sutil em background */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.7 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+#root {
+  position: relative;
+  z-index: 1;
+}
+
+/* =============================================================
+   Confetti — partículas caindo do topo no modal de missão
+   ============================================================= */
+.cq-confetti {
+  position: absolute;
+  top: -20px;
+  display: block;
+  animation: cq-confetti-fall linear forwards;
+  will-change: transform, opacity;
+}
+
+@keyframes cq-confetti-fall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  70% { opacity: 1; }
+  100% {
+    transform: translateY(110vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+@keyframes cq-bounce-soft {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+
+.animate-bounce-soft {
+  animation: cq-bounce-soft 1.4s ease-in-out infinite;
+}
+
+/* Respeitar usuários que pediram menos animação */
+@media (prefers-reduced-motion: reduce) {
+  .cq-confetti,
+  .animate-bounce-soft,
+  .animate-streak-pulse,
+  .animate-shimmer {
+    animation: none !important;
+  }
 }

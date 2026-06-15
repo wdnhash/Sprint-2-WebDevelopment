@@ -1,0 +1,74 @@
+[
+  {
+    "id": "a-1",
+    "title": "Primeiro Passo",
+    "description": "Conclua sua primeira missão diária.",
+    "icon": "fa-shoe-prints",
+    "rarity": "comum",
+    "color": "#7AD180",
+    "requirement": { "type": "missions", "value": 1 }
+  },
+  {
+    "id": "a-2",
+    "title": "Hidratação Mestre",
+    "description": "Cumpra a missão de água por 7 dias seguidos.",
+    "icon": "fa-droplet",
+    "rarity": "raro",
+    "color": "#7AD1C3",
+    "requirement": { "type": "streak", "value": 7 }
+  },
+  {
+    "id": "a-3",
+    "title": "Mente Calma",
+    "description": "Acumule 100 XP em missões da trilha Mente.",
+    "icon": "fa-brain",
+    "rarity": "raro",
+    "color": "#A084DC",
+    "requirement": { "type": "xp_category", "category": "mente", "value": 100 }
+  },
+  {
+    "id": "a-4",
+    "title": "Maratonista Iniciante",
+    "description": "Atinja o nível 5.",
+    "icon": "fa-medal",
+    "rarity": "epico",
+    "color": "#F4B860",
+    "requirement": { "type": "level", "value": 5 }
+  },
+  {
+    "id": "a-5",
+    "title": "Streak de Ferro",
+    "description": "30 dias consecutivos cumprindo missões.",
+    "icon": "fa-fire",
+    "rarity": "lendario",
+    "color": "#E53935",
+    "requirement": { "type": "streak", "value": 30 }
+  },
+  {
+    "id": "a-6",
+    "title": "Colecionador",
+    "description": "Resgate 5 recompensas diferentes.",
+    "icon": "fa-gift",
+    "rarity": "epico",
+    "color": "#1C9770",
+    "requirement": { "type": "rewards_claimed", "value": 5 }
+  },
+  {
+    "id": "a-7",
+    "title": "Conquistador",
+    "description": "Acumule 1.000 pontos CarePlus.",
+    "icon": "fa-trophy",
+    "rarity": "lendario",
+    "color": "#FFD700",
+    "requirement": { "type": "carepoints", "value": 1000 }
+  },
+  {
+    "id": "a-8",
+    "title": "Despertar",
+    "description": "Conclua a Trilha do Sono.",
+    "icon": "fa-moon",
+    "rarity": "raro",
+    "color": "#3B5998",
+    "requirement": { "type": "trail_complete", "trail": "t-sono" }
+  }
+]

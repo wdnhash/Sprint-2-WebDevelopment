@@ -1,0 +1,11 @@
+CareQuest – Challenge Care Plus
+FIAP – Engenharia de Software – 1º ano
+Sprint 3 – Entrega Final
+
+Integrantes do grupo:
+
+Nome: Douglas Taveira Vilella Roberto       | RM: 567846
+Nome: Fábio Alexandre Barbosa Filho         | RM: 567419
+Nome: Gilberto Hideaki Matsunaga            | RM: 568191
+Nome: Igor Davi Avelar Rosa Cesário         | RM: 568163
+Nome: Wenderson da Silva Santos             | RM: 567847

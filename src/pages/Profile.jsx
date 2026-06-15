@@ -1,13 +1,39 @@
-import { useState } from 'react';
-import './Profile.css';
+import { useMemo, useState } from 'react';
+import CheckInForm from '../components/CheckInForm';
+import MissionCompleteModal from '../components/MissionCompleteModal';
 
-function Profile({ userStats, onUpdateUser }) {
+// Atalhos do menu de perfil (decorativos nesta entrega)
+const MENU_ITEMS = [
+  { icon: 'fa-regular fa-bell', label: 'Notificações' },
+  { icon: 'lni lni-gear-1', label: 'Configurações' },
+  { icon: 'fa-regular fa-circle-question', label: 'Ajuda & Suporte' },
+];
+
+// Opções de ícones do FontAwesome para o usuário escolher como avatar
+const AVATAR_OPTIONS = [
+  'fa-user', 'fa-user-ninja', 'fa-user-astronaut', 'fa-user-tie',
+  'fa-cat', 'fa-dog', 'fa-frog', 'fa-robot',
+];
+
+function Profile({ userStats, onUpdateUser, onCheckIn }) {
   // Recebe avatar do state (se existir), senão usa um padrão
-  const { name, title, level, streak, avatar = 'fa-user' } = userStats;
-  
+  const { name, title, level, streak, avatar = 'fa-user', checkIns = [] } = userStats;
+
   const [isEditing, setIsEditing] = useState(false);
   const [editName, setEditName] = useState(name);
   const [editAvatar, setEditAvatar] = useState(avatar);
+  const [showCheckIn, setShowCheckIn] = useState(false);
+  const [checkInReward, setCheckInReward] = useState(null);
+
+  const lastCheckIn = useMemo(() => checkIns[checkIns.length - 1], [checkIns]);
+  const today = new Date().toISOString().slice(0, 10);
+  const alreadyCheckedInToday = lastCheckIn && lastCheckIn.date?.slice(0, 10) === today;
+
+  const handleCheckInSubmit = (checkInData) => {
+    onCheckIn(checkInData);
+    setShowCheckIn(false);
+    setCheckInReward(checkInData.reward);
+  };
 
   const handleSave = () => {
     if (editName.trim() === '') return;
@@ -15,69 +41,55 @@ function Profile({ userStats, onUpdateUser }) {
     setIsEditing(false);
   };
 
-  // Opções de ícones do FontAwesome para o usuário escolher
-  const avatarOptions = [
-    'fa-user',
-    'fa-user-ninja',
-    'fa-user-astronaut',
-    'fa-user-tie',
-    'fa-cat',
-    'fa-dog',
-    'fa-frog',
-    'fa-robot'
-  ];
-
   return (
-    <div style={{ backgroundColor: 'var(--color-bg)', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+    <div className="lg:max-w-shell lg:mx-auto bg-cq-bg min-h-screen flex flex-col">
       {/* HEADER DE PERFIL */}
-      <header className="profile__header">
-        <div className="profile__top">
-          <h1>Perfil</h1>
-          <button 
-            aria-label={isEditing ? "Cancelar edição" : "Editar perfil"} 
+      <header className="cq-mesh-primary cq-noise text-white px-6 pt-7 pb-8 flex flex-col gap-6 rounded-b-[28px] relative overflow-hidden">
+        <div className="flex items-center justify-between">
+          <h1 className="text-xl font-bold m-0">Perfil</h1>
+          <button
+            className="text-white w-11 h-11 inline-flex items-center justify-center rounded-full bg-transparent border-0 cursor-pointer transition-colors hover:bg-white/15"
+            aria-label={isEditing ? "Cancelar edição" : "Editar perfil"}
             onClick={() => {
               setIsEditing(!isEditing);
               setEditName(name); // reseta ao abrir/fechar
               setEditAvatar(avatar);
             }}
           >
-            <i className={isEditing ? "fa-solid fa-xmark" : "fa-solid fa-pen"} aria-hidden="true"></i>
+            <i className={`text-[22px] ${isEditing ? "fa-solid fa-xmark" : "fa-solid fa-pen"}`} aria-hidden="true"></i>
           </button>
         </div>
 
         {isEditing ? (
           /* MODO DE EDIÇÃO */
-          <div className="profile__identity" style={{ flexDirection: 'column', alignItems: 'flex-start', gap: '15px' }}>
-            <label style={{ fontSize: '14px', opacity: 0.9 }}>Escolha seu avatar:</label>
-            <div style={{ display: 'flex', gap: '10px', overflowX: 'auto', width: '100%', paddingBottom: '10px' }}>
-              {avatarOptions.map(icon => (
-                <button 
+          <div className="flex flex-col items-start gap-[15px]">
+            <label className="text-sm opacity-90">Escolha seu avatar:</label>
+            <div className="flex gap-2.5 overflow-x-auto w-full pb-2.5">
+              {AVATAR_OPTIONS.map((icon) => (
+                <button
                   key={icon}
                   onClick={() => setEditAvatar(icon)}
                   aria-label={`Selecionar avatar ${icon}`}
-                  style={{
-                    width: '50px', height: '50px', borderRadius: '50%', flexShrink: 0,
-                    backgroundColor: editAvatar === icon ? 'var(--color-secondary)' : 'rgba(255,255,255,0.2)',
-                    border: 'none', color: '#fff', fontSize: '20px', cursor: 'pointer',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center'
-                  }}
+                  className={`w-[50px] h-[50px] rounded-full shrink-0 border-0 text-white text-xl cursor-pointer flex items-center justify-center ${
+                    editAvatar === icon ? 'bg-cq-secondary' : 'bg-white/20'
+                  }`}
                 >
                   <i className={`fa-solid ${icon}`}></i>
                 </button>
               ))}
             </div>
-            
-            <div style={{ display: 'flex', gap: '10px', width: '100%' }}>
-              <input 
-                type="text" 
-                value={editName} 
-                onChange={(e) => setEditName(e.target.value)} 
+
+            <div className="flex gap-2.5 w-full">
+              <input
+                type="text"
+                value={editName}
+                onChange={(e) => setEditName(e.target.value)}
                 placeholder="Seu nome"
-                style={{ flex: 1, padding: '12px', borderRadius: '12px', border: 'none', outline: 'none', fontSize: '16px', color: 'var(--color-text)' }}
+                className="flex-1 p-3 rounded-xl border-0 outline-none text-base text-cq-text"
               />
-              <button 
+              <button
                 onClick={handleSave}
-                style={{ backgroundColor: 'var(--color-secondary)', border: 'none', borderRadius: '12px', padding: '0 20px', color: '#fff', fontWeight: 'bold', cursor: 'pointer' }}
+                className="bg-cq-secondary border-0 rounded-xl px-5 text-white font-bold cursor-pointer"
               >
                 Salvar
               </button>
@@ -85,69 +97,122 @@ function Profile({ userStats, onUpdateUser }) {
           </div>
         ) : (
           /* MODO VISUALIZAÇÃO */
-          <div className="profile__identity">
-            <div className="profile__avatar" aria-hidden="true">
+          <div className="flex items-center gap-4">
+            <div className="w-20 h-20 rounded-full bg-white flex items-center justify-center text-cq-primary text-[32px] shrink-0" aria-hidden="true">
               <i className={`fa-solid ${avatar}`}></i>
             </div>
-            <div className="profile__name">
-              <h2>{name}</h2>
-              <p>{title}</p>
+            <div className="flex flex-col gap-1">
+              <h2 className="text-base font-bold m-0">{name}</h2>
+              <p className="text-sm opacity-90 m-0">{title}</p>
             </div>
           </div>
         )}
 
-        <div className="profile__stats">
-          <div className="profile__stat-card">
-            <p>Nível</p>
-            <strong>{level}</strong>
+        <div className="flex items-stretch justify-between gap-4">
+          <div className="flex-1 bg-white/[0.18] rounded-2xl p-4 flex flex-col items-center justify-center gap-1">
+            <p className="text-xs opacity-90 m-0">Nível</p>
+            <strong className="text-lg font-bold m-0">{level}</strong>
           </div>
-          <div className="profile__stat-card">
-            <p>Streak</p>
-            <strong>{streak} dias</strong>
+          <div className="flex-1 bg-white/[0.18] rounded-2xl p-4 flex flex-col items-center justify-center gap-1">
+            <p className="text-xs opacity-90 m-0">Streak</p>
+            <strong className="text-lg font-bold m-0">{streak} dias</strong>
           </div>
         </div>
       </header>
 
       {/* MENU DE OPÇÕES */}
-      <main className="profile__main">
-        <nav className="profile__menu" aria-label="Atalhos do perfil">
-          <button className="profile__menu-item">
-            <span className="profile__menu-content">
-              <span className="profile__menu-icon" aria-hidden="true">
-                <i className="fa-regular fa-bell"></i>
-              </span>
-              <span className="text">Notificações</span>
+      <main className="p-6 flex-1 flex flex-col gap-6">
+
+        {/* CARD DE CHECK-IN */}
+        <section className="bg-white rounded-2xl p-5 shadow-card flex flex-col gap-3" aria-label="Check-in diário">
+          <div className="flex items-center justify-between gap-3">
+            <div>
+              <h2 className="text-base font-bold text-cq-text m-0">Check-in de hoje</h2>
+              <p className="text-xs text-cq-text-muted m-0 mt-0.5">
+                {alreadyCheckedInToday
+                  ? `Você já registrou hoje — humor: ${lastCheckIn?.mood || '—'}`
+                  : 'Registre como foi seu dia e ganhe XP extra.'}
+              </p>
+            </div>
+            <span
+              aria-hidden="true"
+              className={`w-10 h-10 rounded-full flex items-center justify-center text-lg ${
+                alreadyCheckedInToday
+                  ? 'bg-emerald-100 text-emerald-700'
+                  : 'bg-cq-primary/10 text-cq-primary'
+              }`}
+            >
+              <i className={`fa-solid ${alreadyCheckedInToday ? 'fa-check' : 'fa-clipboard-list'}`}></i>
             </span>
-            <i className="lni lni-angle-double-right arrow" aria-hidden="true"></i>
+          </div>
+          <button
+            type="button"
+            onClick={() => setShowCheckIn(true)}
+            className={`py-2.5 px-4 rounded-xl text-sm font-bold transition ${
+              alreadyCheckedInToday
+                ? 'bg-cq-bg text-cq-text-muted hover:bg-gray-200'
+                : 'bg-cq-primary hover:bg-cq-primary-light text-white'
+            }`}
+          >
+            {alreadyCheckedInToday ? 'Refazer check-in' : 'Fazer check-in agora'}
           </button>
-          
-          <button className="profile__menu-item">
-            <span className="profile__menu-content">
-              <span className="profile__menu-icon profile__menu-icon--gray" aria-hidden="true">
-                <i className="lni lni-gear-1"></i>
+
+          {checkIns.length > 0 && (
+            <div className="grid grid-cols-3 gap-2 pt-2 border-t border-gray-100">
+              <div className="text-center">
+                <p className="text-[10px] text-cq-text-muted uppercase font-bold m-0">Check-ins</p>
+                <strong className="text-cq-text text-lg block">{checkIns.length}</strong>
+              </div>
+              <div className="text-center">
+                <p className="text-[10px] text-cq-text-muted uppercase font-bold m-0">Último humor</p>
+                <strong className="text-cq-text text-lg block capitalize">{lastCheckIn?.mood || '—'}</strong>
+              </div>
+              <div className="text-center">
+                <p className="text-[10px] text-cq-text-muted uppercase font-bold m-0">Água ontem</p>
+                <strong className="text-cq-text text-lg block">{lastCheckIn?.waterCups ?? 0}</strong>
+              </div>
+            </div>
+          )}
+        </section>
+
+        <nav className="bg-cq-surface rounded-2xl overflow-hidden shadow-card flex flex-col" aria-label="Atalhos do perfil">
+          {MENU_ITEMS.map(({ icon, label }) => (
+            <button
+              key={label}
+              className="flex items-center justify-between px-5 py-[1.125rem] text-cq-text border-0 border-b border-[#E5E7EB] last:border-b-0 min-h-16 transition-colors bg-transparent cursor-pointer w-full hover:bg-cq-bg"
+            >
+              <span className="flex items-center gap-4">
+                <span className="w-10 h-10 rounded-full flex items-center justify-center text-lg bg-[#F3F4F6] text-cq-text-muted" aria-hidden="true">
+                  <i className={icon}></i>
+                </span>
+                <span className="text-base font-medium">{label}</span>
               </span>
-              <span className="text">Configurações</span>
-            </span>
-            <i className="lni lni-angle-double-right arrow" aria-hidden="true"></i>
-          </button>
-          
-          <button className="profile__menu-item">
-            <span className="profile__menu-content">
-              <span className="profile__menu-icon profile__menu-icon--gray" aria-hidden="true">
-                {/* Alterado para o ícone de interrogação do FontAwesome, garantindo que irá renderizar */}
-                <i className="fa-regular fa-circle-question"></i>
-              </span>
-              <span className="text">Ajuda &amp; Suporte</span>
-            </span>
-            <i className="lni lni-angle-double-right arrow" aria-hidden="true"></i>
-          </button>
+              <i className="lni lni-angle-double-right text-cq-text-muted" aria-hidden="true"></i>
+            </button>
+          ))}
         </nav>
 
-        <button className="profile__exit">
+        <button className="flex items-center justify-center gap-3 p-[1.125rem] text-cq-error font-bold rounded-2xl bg-cq-surface shadow-card min-h-[44px] border-0 cursor-pointer transition-colors w-full hover:bg-[#FEE2E2]">
           <i className="fa-solid fa-arrow-right-from-bracket" aria-hidden="true"></i>
           <span>Sair da conta</span>
         </button>
       </main>
+
+      {showCheckIn && (
+        <CheckInForm
+          onSubmit={handleCheckInSubmit}
+          onClose={() => setShowCheckIn(false)}
+        />
+      )}
+
+      {checkInReward && (
+        <MissionCompleteModal
+          xp={checkInReward.xp}
+          pts={checkInReward.pts}
+          title="Check-in registrado!"
+          onClose={() => setCheckInReward(null)}
+        />
+      )}
     </div>
   );
 }

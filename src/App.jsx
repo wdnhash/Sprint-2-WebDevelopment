@@ -5,7 +5,9 @@ import Home from './pages/Home';
 import Wallet from './pages/Wallet';
 import Profile from './pages/Profile';
 import Onboarding from './pages/Onboarding';
+import Trails from './pages/Trails';
 import BottomNav from './components/layout/BottomNav';
+import Footer from './components/layout/Footer';
 
 function App() {
   const location = useLocation();
@@ -23,14 +25,18 @@ function App() {
     
     // Retorna default em caso de erro ou sem dados
     return {
-      name: "Wenderson", 
+      name: "Wenderson",
       level: 1,
       title: "Iniciante",
       carePoints: 0,
       xp: 0,
       streak: 0,
       hasCompletedOnboarding: false,
-      trilha: null
+      trilha: null,
+      completedMissions: [],
+      claimedRewards: [],
+      xpHistory: [],
+      checkIns: []
     };
   });
 
@@ -48,12 +54,64 @@ function App() {
     }));
   };
 
-  const completeMission = (xpEarned, pointsEarned) => {
-    setUserStats(prev => ({
-      ...prev,
-      xp: prev.xp + xpEarned,
-      carePoints: prev.carePoints + pointsEarned
-    }));
+  const completeMission = (xpEarned, pointsEarned, missionId = null) => {
+    setUserStats(prev => {
+      const completed = prev.completedMissions || [];
+      if (missionId && completed.includes(missionId)) {
+        return prev;
+      }
+      const newXp = prev.xp + xpEarned;
+      const newLevel = Math.floor(newXp / 100) + 1;
+      const today = new Date().toISOString().slice(0, 10);
+      const history = prev.xpHistory || [];
+      const lastEntry = history[history.length - 1];
+      const updatedHistory = lastEntry && lastEntry.date === today
+        ? [...history.slice(0, -1), { date: today, xp: lastEntry.xp + xpEarned, pts: lastEntry.pts + pointsEarned }]
+        : [...history, { date: today, xp: xpEarned, pts: pointsEarned }];
+
+      return {
+        ...prev,
+        xp: newXp,
+        level: newLevel,
+        carePoints: prev.carePoints + pointsEarned,
+        completedMissions: missionId ? [...completed, missionId] : completed,
+        xpHistory: updatedHistory.slice(-30)
+      };
+    });
+  };
+
+  const claimReward = (rewardId, cost) => {
+    setUserStats(prev => {
+      if (prev.carePoints < cost) return prev;
+      return {
+        ...prev,
+        carePoints: prev.carePoints - cost,
+        claimedRewards: [...(prev.claimedRewards || []), { id: rewardId, claimedAt: new Date().toISOString() }]
+      };
+    });
+  };
+
+  const registerCheckIn = (checkInData) => {
+    const { reward = { xp: 0, pts: 0 }, ...rest } = checkInData;
+    const today = new Date().toISOString().slice(0, 10);
+    setUserStats(prev => {
+      const newXp = prev.xp + reward.xp;
+      const newLevel = Math.floor(newXp / 100) + 1;
+      const history = prev.xpHistory || [];
+      const lastEntry = history[history.length - 1];
+      const updatedHistory = lastEntry && lastEntry.date === today
+        ? [...history.slice(0, -1), { date: today, xp: lastEntry.xp + reward.xp, pts: lastEntry.pts + reward.pts }]
+        : [...history, { date: today, xp: reward.xp, pts: reward.pts }];
+
+      return {
+        ...prev,
+        xp: newXp,
+        level: newLevel,
+        carePoints: prev.carePoints + reward.pts,
+        checkIns: [...(prev.checkIns || []).slice(-29), { ...rest, date: new Date().toISOString() }],
+        xpHistory: updatedHistory.slice(-30)
+      };
+    });
   };
 
   const updateUser = (newData) => {
@@ -67,7 +125,9 @@ function App() {
   const hideBottomNav = location.pathname === '/onboarding';
 
   return (
-    <div style={{ minHeight: '100vh', paddingBottom: hideBottomNav ? '0' : '80px' }}>
+    <div
+      className={`min-h-screen ${hideBottomNav ? '' : 'pb-20 lg:pb-0 lg:pl-64'}`}
+    >
 
       <Routes>
         {/* ROTA PÚBLICA / ONBOARDING */}
@@ -90,24 +150,36 @@ function App() {
           } 
         />
         
-        <Route 
-          path="/carteira" 
+        <Route
+          path="/carteira"
           element={
-            userStats.hasCompletedOnboarding 
-              ? <Wallet userStats={userStats} /> 
+            userStats.hasCompletedOnboarding
+              ? <Wallet userStats={userStats} onClaimReward={claimReward} />
               : <Navigate to="/onboarding" replace />
-          } 
+          }
         />
         
-        <Route 
-          path="/perfil" 
+        <Route
+          path="/trilhas"
           element={
-            userStats.hasCompletedOnboarding 
-              ? <Profile userStats={userStats} onUpdateUser={updateUser} /> 
+            userStats.hasCompletedOnboarding
+              ? <Trails userStats={userStats} />
               : <Navigate to="/onboarding" replace />
-          } 
+          }
+        />
+
+        <Route
+          path="/perfil"
+          element={
+            userStats.hasCompletedOnboarding
+              ? <Profile userStats={userStats} onUpdateUser={updateUser} onCheckIn={registerCheckIn} />
+              : <Navigate to="/onboarding" replace />
+          }
         />
       </Routes>
+
+      {/* Rodapé global (oculto no onboarding para não competir com o fluxo) */}
+      {!hideBottomNav && <Footer />}
 
       {/* Exibe a barra de navegação condicionalmente */}
       {!hideBottomNav && <BottomNav />}

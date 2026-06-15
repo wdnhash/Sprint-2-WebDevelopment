@@ -1,0 +1,66 @@
+[
+  {
+    "id": "t-sono",
+    "key": "Dormir melhor",
+    "title": "Trilha do Sono",
+    "subtitle": "Construa uma rotina noturna saudável",
+    "icon": "fa-moon",
+    "colorClass": "objective__icon--moon",
+    "totalSteps": 7,
+    "missionsIds": ["d-4"],
+    "description": "Aprenda a desligar telas, criar um ambiente propício e melhorar a qualidade do sono em 7 dias.",
+    "tips": [
+      "Evite cafeína após as 16h",
+      "Mantenha o quarto escuro e fresco",
+      "Estabeleça um horário fixo para dormir"
+    ]
+  },
+  {
+    "id": "t-corpo",
+    "key": "Mexer mais o corpo",
+    "title": "Trilha do Movimento",
+    "subtitle": "Reative seu corpo no dia a dia",
+    "icon": "fa-heart-pulse",
+    "colorClass": "objective__icon--body",
+    "totalSteps": 14,
+    "missionsIds": ["d-1", "w-1"],
+    "description": "Construa o hábito do movimento sem precisar de academia, em pequenas doses diárias.",
+    "tips": [
+      "Comece com 10 minutos por dia",
+      "Use as escadas em vez do elevador",
+      "Alongue-se a cada hora"
+    ]
+  },
+  {
+    "id": "t-mente",
+    "key": "Cuidar da mente",
+    "title": "Trilha do Equilíbrio Mental",
+    "subtitle": "Pratique mindfulness e autoconsciência",
+    "icon": "fa-brain",
+    "colorClass": "objective__icon--brain",
+    "totalSteps": 10,
+    "missionsIds": ["d-3"],
+    "description": "Técnicas guiadas de respiração, gratidão e mindfulness para o seu equilíbrio emocional.",
+    "tips": [
+      "Respire fundo 3 vezes antes de reuniões",
+      "Anote 3 gratidões por dia",
+      "Reserve 5 min de silêncio diários"
+    ]
+  },
+  {
+    "id": "t-alimentacao",
+    "key": "Me alimentar melhor",
+    "title": "Trilha da Alimentação",
+    "subtitle": "Pequenas trocas que transformam",
+    "icon": "fa-utensils",
+    "colorClass": "objective__icon--food",
+    "totalSteps": 12,
+    "missionsIds": ["d-2", "w-2"],
+    "description": "Reaprenda hábitos alimentares simples e sustentáveis, sem dietas restritivas.",
+    "tips": [
+      "Beba água antes de cada refeição",
+      "Inclua uma fruta no café da manhã",
+      "Mastigue devagar"
+    ]
+  }
+]
