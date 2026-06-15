@@ -9,8 +9,8 @@ Bem-vindo ao repositório Front-End do **CareQuest**, a solução gamificada des
 - **[React 19](https://react.dev/)** – Biblioteca para construção de interfaces declarativas.
 - **[Vite](https://vitejs.dev/)** – Build tool moderna e ultrarrápida.
 - **[React Router DOM](https://reactrouter.com/)** – Roteamento SPA com proteção de rotas.
-- **[TailwindCSS 3](https://tailwindcss.com/)** – Estilização utilitária moderna e responsiva.
-- **CSS3 Customizado + CSS Grid Layout** – Design system híbrido com variáveis globais.
+- **[TailwindCSS 3](https://tailwindcss.com/)** – Estilização utilitária de **todos** os componentes (sem CSS por página).
+- **CSS Grid Layout + camada global** – `index.css` concentra apenas o design system (variáveis, utilitários `cq-*` e keyframes).
 - **[Bootstrap 5](https://getbootstrap.com/)** – Grid e utilitários complementares.
 - **[FontAwesome](https://fontawesome.com/) & [LineIcons](https://lineicons.com/)** – Bibliotecas de ícones.
 
@@ -48,6 +48,7 @@ Bem-vindo ao repositório Front-End do **CareQuest**, a solução gamificada des
 - **Mobile/Tablet**: app shell mobile-first com bottom navigation flutuante.
 - **Desktop (≥1024px)**: sidebar lateral fixa substituindo a bottom nav, com o conteúdo limitado a `max-w-shell` (768px) e centralizado.
 - Breakpoints Tailwind: `sm`, `md`, `lg`.
+- **Estrutura semântica completa**: cabeçalho (`<header>`), corpo (`<main>`) e **rodapé global** (`<footer>` em `components/layout/Footer.jsx`).
 
 ### ♿ Acessibilidade
 - `role`, `aria-label`, `aria-pressed`, `aria-modal` e `aria-current` aplicados onde relevante.
@@ -59,14 +60,14 @@ Bem-vindo ao repositório Front-End do **CareQuest**, a solução gamificada des
 ```
 src/
 ├── App.jsx                       # Estado global, rotas e ações
-├── index.css                     # Variáveis CareQuest + diretivas Tailwind
+├── index.css                     # Design system: variáveis, utilitários cq-* e diretivas Tailwind
 ├── components/
 │   ├── CheckInForm.jsx           # Formulário de check-in diário
-│   ├── MissionCompleteModal.jsx  # Modal de recompensa (Tailwind)
+│   ├── MissionCompleteModal.jsx  # Modal de recompensa
 │   ├── ProgressDashboard.jsx     # Gráfico SVG de XP/pontos
 │   └── layout/
 │       ├── BottomNav.jsx         # Bottom nav (mobile) + Sidebar (desktop)
-│       └── BottomNav.css
+│       └── Footer.jsx            # Rodapé global semântico
 ├── hooks/
 │   └── useFetch.js               # Hook reutilizável de fetch
 ├── services/
@@ -130,7 +131,8 @@ A aplicação salva seu progresso no `localStorage`. Para revisitar as telas ini
 | Requisito | Onde verificar |
 |---|---|
 | ✅ Consumo de API (JSON Local) | `src/services/api.js` + `public/api/*.json` |
-| ✅ TailwindCSS | `tailwind.config.js` + classes nos componentes novos |
+| ✅ TailwindCSS (todos os componentes) | `tailwind.config.js` + classes em **todas** as páginas/componentes |
+| ✅ Estrutura cabeçalho / corpo / footer | `components/layout/Footer.jsx` + `<header>`/`<main>` nas páginas |
 | ✅ CSS Grid Layout avançado | `Trails.jsx` (grid de conquistas), `Wallet.jsx` |
 | ✅ Formulário interativo | `components/CheckInForm.jsx` |
 | ✅ Modal | `components/MissionCompleteModal.jsx`, `CheckInForm.jsx` |
