@@ -9,6 +9,22 @@ import Trails from './pages/Trails';
 import BottomNav from './components/layout/BottomNav';
 import Footer from './components/layout/Footer';
 
+// Estado inicial do usuário — reutilizado no boot e ao sair da conta
+const DEFAULT_USER_STATS = {
+  name: "Wenderson",
+  level: 1,
+  title: "Iniciante",
+  carePoints: 0,
+  xp: 0,
+  streak: 0,
+  hasCompletedOnboarding: false,
+  trilha: null,
+  completedMissions: [],
+  claimedRewards: [],
+  xpHistory: [],
+  checkIns: []
+};
+
 function App() {
   const location = useLocation();
 
@@ -22,22 +38,9 @@ function App() {
     } catch (e) {
       console.error("Erro ao ler do localStorage", e);
     }
-    
+
     // Retorna default em caso de erro ou sem dados
-    return {
-      name: "Wenderson",
-      level: 1,
-      title: "Iniciante",
-      carePoints: 0,
-      xp: 0,
-      streak: 0,
-      hasCompletedOnboarding: false,
-      trilha: null,
-      completedMissions: [],
-      claimedRewards: [],
-      xpHistory: [],
-      checkIns: []
-    };
+    return { ...DEFAULT_USER_STATS };
   });
 
   // 2. Sincroniza alterações no state com o navegador
@@ -121,6 +124,12 @@ function App() {
     }));
   };
 
+  // Sair da conta: limpa a persistência e volta ao onboarding
+  const logout = () => {
+    localStorage.removeItem('careQuestData');
+    setUserStats({ ...DEFAULT_USER_STATS });
+  };
+
   // 4. Lógica para esconder a barra inferior no onboarding
   const hideBottomNav = location.pathname === '/onboarding';
 
@@ -172,10 +181,13 @@ function App() {
           path="/perfil"
           element={
             userStats.hasCompletedOnboarding
-              ? <Profile userStats={userStats} onUpdateUser={updateUser} onCheckIn={registerCheckIn} />
+              ? <Profile userStats={userStats} onUpdateUser={updateUser} onCheckIn={registerCheckIn} onLogout={logout} />
               : <Navigate to="/onboarding" replace />
           }
         />
+
+        {/* Qualquer rota desconhecida volta para a home */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
 
       {/* Rodapé global (oculto no onboarding para não competir com o fluxo) */}
