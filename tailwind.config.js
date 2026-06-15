@@ -34,11 +34,22 @@ export default {
       },
       animation: {
         'pop-in': 'popIn 0.3s ease-out',
+        'streak-pulse': 'streakPulse 2.5s ease-in-out infinite',
+        shimmer: 'shimmer 2.5s ease-in-out infinite',
       },
       keyframes: {
         popIn: {
           '0%': { transform: 'scale(0.85)', opacity: '0' },
           '100%': { transform: 'scale(1)', opacity: '1' },
+        },
+        streakPulse: {
+          '0%, 100%': { boxShadow: '0 4px 12px rgba(245,73,0,0.35), inset 0 0 0 1px rgba(255,255,255,0.15)' },
+          '50%': { boxShadow: '0 6px 20px rgba(245,73,0,0.55), inset 0 0 0 1px rgba(255,255,255,0.25)' },
+        },
+        shimmer: {
+          '0%': { transform: 'translateX(-100px)', opacity: '0' },
+          '30%': { opacity: '1' },
+          '100%': { transform: 'translateX(0)', opacity: '0' },
         },
       },
     },

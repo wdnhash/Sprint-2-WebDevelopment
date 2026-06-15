@@ -176,8 +176,8 @@ body::before {
 @media (prefers-reduced-motion: reduce) {
   .cq-confetti,
   .animate-bounce-soft,
-  .missions__streak--hot,
-  .missions__progress-bar > span::after {
+  .animate-streak-pulse,
+  .animate-shimmer {
     animation: none !important;
   }
 }
