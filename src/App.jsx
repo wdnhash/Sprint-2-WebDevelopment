@@ -7,6 +7,7 @@ import Profile from './pages/Profile';
 import Onboarding from './pages/Onboarding';
 import Trails from './pages/Trails';
 import BottomNav from './components/layout/BottomNav';
+import Footer from './components/layout/Footer';
 
 function App() {
   const location = useLocation();
@@ -176,6 +177,9 @@ function App() {
           }
         />
       </Routes>
+
+      {/* Rodapé global (oculto no onboarding para não competir com o fluxo) */}
+      {!hideBottomNav && <Footer />}
 
       {/* Exibe a barra de navegação condicionalmente */}
       {!hideBottomNav && <BottomNav />}
