@@ -15,7 +15,7 @@ const AVATAR_OPTIONS = [
   'fa-cat', 'fa-dog', 'fa-frog', 'fa-robot',
 ];
 
-function Profile({ userStats, onUpdateUser, onCheckIn }) {
+function Profile({ userStats, onUpdateUser, onCheckIn, onLogout }) {
   // Recebe avatar do state (se existir), senão usa um padrão
   const { name, title, level, streak, avatar = 'fa-user', checkIns = [] } = userStats;
 
@@ -39,6 +39,12 @@ function Profile({ userStats, onUpdateUser, onCheckIn }) {
     if (editName.trim() === '') return;
     onUpdateUser({ name: editName, avatar: editAvatar });
     setIsEditing(false);
+  };
+
+  const handleLogout = () => {
+    if (window.confirm('Sair da conta? Seu progresso será apagado e você voltará ao início.')) {
+      onLogout();
+    }
   };
 
   return (
@@ -192,7 +198,11 @@ function Profile({ userStats, onUpdateUser, onCheckIn }) {
           ))}
         </nav>
 
-        <button className="flex items-center justify-center gap-3 p-[1.125rem] text-cq-error font-bold rounded-2xl bg-cq-surface shadow-card min-h-[44px] border-0 cursor-pointer transition-colors w-full hover:bg-[#FEE2E2]">
+        <button
+          type="button"
+          onClick={handleLogout}
+          className="flex items-center justify-center gap-3 p-[1.125rem] text-cq-error font-bold rounded-2xl bg-cq-surface shadow-card min-h-[44px] border-0 cursor-pointer transition-colors w-full hover:bg-[#FEE2E2]"
+        >
           <i className="fa-solid fa-arrow-right-from-bracket" aria-hidden="true"></i>
           <span>Sair da conta</span>
         </button>
