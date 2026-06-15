@@ -1,5 +1,4 @@
 import { useLocation, useNavigate } from 'react-router-dom';
-import './BottomNav.css';
 
 const NAV_ITEMS = [
   { path: '/', icon: 'lni lni-home-2', label: 'Início' },
@@ -20,12 +19,14 @@ function BottomNav() {
   return (
     <>
       {/* Mobile/Tablet: barra inferior flutuante com bolha morphing */}
-      <nav className="bottom-nav lg:hidden" aria-label="Navegação principal">
-        {/* A largura do pill é definida no CSS via calc((100% - 12px) / 4)
-            para casar com os 6px de padding do .bottom-nav. translateX(100%)
-            move por exatamente uma largura de slot. */}
+      <nav
+        className="lg:hidden fixed bottom-5 left-1/2 -translate-x-1/2 w-[calc(100%-32px)] max-w-[420px] h-[68px] bg-cq-surface flex items-stretch justify-between p-1.5 rounded-[22px] z-50 backdrop-blur-md shadow-[0_10px_30px_-8px_rgba(0,0,0,0.18),0_4px_12px_rgba(0,0,0,0.05),0_0_0_1px_rgba(20,20,20,0.04)]"
+        aria-label="Navegação principal"
+      >
+        {/* A pill ocupa 1/4 da área útil (100% - 12px de padding). Cada step de
+            translateX(N*100%) move pela própria largura, casando com cada botão. */}
         <span
-          className="bottom-nav__pill"
+          className="absolute top-1.5 bottom-1.5 left-1.5 w-[calc((100%-12px)/4)] rounded-2xl pointer-events-none transition-transform duration-[450ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] bg-[linear-gradient(135deg,#1C9770_0%,#167a5a_100%)] shadow-[0_4px_14px_rgba(28,151,112,0.32),inset_0_1px_0_rgba(255,255,255,0.15)]"
           aria-hidden="true"
           style={{
             transform: `translateX(${activeIndex * 100}%)`,
@@ -36,12 +37,19 @@ function BottomNav() {
           return (
             <button
               key={item.path}
-              className={`bottom-nav__item ${active ? 'bottom-nav__item--active' : ''}`}
+              className={`group flex-1 flex flex-col items-center justify-center gap-0.5 h-full text-[10px] font-semibold rounded-2xl font-display tracking-tight border-0 bg-transparent cursor-pointer relative z-[1] transition-colors duration-300 ${
+                active ? 'text-white' : 'text-cq-text-muted hover:text-cq-primary'
+              }`}
               onClick={() => navigate(item.path)}
               aria-current={active ? 'page' : undefined}
             >
-              <i className={item.icon} aria-hidden="true"></i>
-              <span className="bottom-nav__label">{item.label}</span>
+              <i
+                className={`${item.icon} text-[22px] transition-transform duration-300 ${
+                  active ? '-translate-y-px scale-105' : 'group-hover:-translate-y-0.5 group-hover:scale-110'
+                }`}
+                aria-hidden="true"
+              ></i>
+              <span className={`text-[10px] leading-none ${active ? 'opacity-100 font-bold' : 'opacity-85'}`}>{item.label}</span>
             </button>
           );
         })}
